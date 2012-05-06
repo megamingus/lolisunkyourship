@@ -1,7 +1,14 @@
 logs
+.idea/
 project/project
 project/target
 target
 tmp
 .history
 dist
+*.iml
+*.iws
+*.ipr
+*.project
+*.classpath
+.settings/

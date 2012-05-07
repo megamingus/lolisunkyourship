@@ -26,7 +26,7 @@ public class ChatRoom extends UntypedActor {
     
     // Create a Robot, just for fun.
     static {
-        new Robot(defaultRoom);
+     //   new Robot(defaultRoom);
     }
     
     /**
@@ -42,9 +42,13 @@ public class ChatRoom extends UntypedActor {
             // For each event received on the socket,
             in.onMessage(new Callback<JsonNode>() {
                public void invoke(JsonNode event) {
-                   
-                   // Send a Talk message to the room.
-                   defaultRoom.tell(new Talk(username, event.get("text").asText()));
+                   // Send a UserAction message to the room.
+                   if(event.has("attack")){
+                       defaultRoom.tell(new UserAction(username,UserAction.Action.ATTACK, event.get("attack").asText()));
+                   }
+                   if(event.has("text")){
+                      defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("text").asText()));
+                   }
                    
                } 
             });
@@ -81,22 +85,29 @@ public class ChatRoom extends UntypedActor {
             
             // Received a Join message
             Join join = (Join)message;
-            
-            // Check if this username is free.
-            if(members.containsKey(join.username)) {
-                getSender().tell("This username is already used");
-            } else {
-                members.put(join.username, join.channel);
-                notifyAll("join", join.username, "has entered the room");
-                getSender().tell("OK");
+
+               // Check if there are 2 players already
+            if( members.size()<2){
+                // Check if this username is free.
+                if(members.containsKey(join.username)) {
+                    getSender().tell("This username is already used");
+                } else {
+                    members.put(join.username, join.channel);
+                    notifyAll("join", join.username, "has entered the room");
+                    getSender().tell("OK");
+                }
+            } else{
+                getSender().tell("There are 2 players already, sorry");
             }
             
-        } else if(message instanceof Talk)  {
-            
-            // Received a Talk message
-            Talk talk = (Talk)message;
-            
-            notifyAll("talk", talk.username, talk.text);
+        } else if(message instanceof UserAction)  {
+            // Received a UserAction message
+            UserAction userAction = (UserAction)message;
+            if (userAction.action.equals(UserAction.Action.ATTACK)) {
+                notifyAll("userAction", userAction.username," is attacking "+userAction.text.substring(7));
+            }  else{
+                 notifyAll("userAction", userAction.username, userAction.text);
+            }
             
         } else if(message instanceof Quit)  {
             
@@ -116,7 +127,6 @@ public class ChatRoom extends UntypedActor {
     // Send a Json event to all members
     public void notifyAll(String kind, String user, String text) {
         for(WebSocket.Out<JsonNode> channel: members.values()) {
-            
             ObjectNode event = Json.newObject();
             event.put("kind", kind);
             event.put("user", user);
@@ -145,15 +155,20 @@ public class ChatRoom extends UntypedActor {
         
     }
     
-    public static class Talk {
-        
+    public static class UserAction {
+
+        public enum Action { CHAT, ATTACK};
+
         final String username;
         final String text;
+        final Action action;
         
-        public Talk(String username, String text) {
+        public UserAction(String username,Action action, String text) {
             this.username = username;
+            this.action=action;
             this.text = text;
         }
+
         
     }
     

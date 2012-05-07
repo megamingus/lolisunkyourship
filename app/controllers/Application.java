@@ -23,6 +23,8 @@ public class Application extends Controller {
      * Display the chat room.
      */
     public static Result chatRoom(String username) {
+
+
         if(username == null || username.trim().equals("")) {
             flash("error", "Please choose a valid username.");
             return redirect(routes.Application.index());

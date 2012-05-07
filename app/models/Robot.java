@@ -3,14 +3,11 @@ package models;
 import play.*;
 import play.mvc.*;
 import play.libs.*;
-import play.libs.F.*;
 
 import akka.util.*;
 import akka.actor.*;
-import akka.dispatch.*;
 
 import org.codehaus.jackson.*;
-import org.codehaus.jackson.node.*;
 
 import static java.util.concurrent.TimeUnit.*;
 
@@ -37,7 +34,7 @@ public class Robot {
             Duration.create(30, SECONDS),
             Duration.create(30, SECONDS),
             chatRoom,
-            new ChatRoom.Talk("Robot", "I'm still alive")
+            new ChatRoom.UserAction("Robot", ChatRoom.UserAction.Action.CHAT, "I'm still alive")
         );
         
     }

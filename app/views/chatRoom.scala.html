@@ -3,7 +3,7 @@
 @main(username) {
     
     <div class="page-header">
-        <h1>Welcome to the chat room <small>You are chatting as @username</small></h1>
+        <h1>Welcome to the Battle room <small>You are captain @username</small></h1>
     </div>
     
     <div id="onError" class="alert-message error">
@@ -11,7 +11,11 @@
             <strong>Oops!</strong> <span></span>
         </p>
     </div>
-    
+     <!--<div id="board" class="row">
+         <div class="span10" id="boardMain">
+             ...
+             </div>
+     </div>  -->
     <div id="onChat" class="row">
         <div class="span10" id="main">
             <div id="messages">
@@ -26,59 +30,6 @@
     </div>
     
     <script type="text/javascript" charset="utf-8">
-    
-        $(function() {
-            var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
-	        var chatSocket = new WS("@routes.Application.chat(username).webSocketURL(request)")
-            
-            var sendMessage = function() {
-                chatSocket.send(JSON.stringify(
-                    {text: $("#talk").val()}
-                ))
-                $("#talk").val('')
-            }
-            
-            var receiveEvent = function(event) {
-                var data = JSON.parse(event.data)
-                
-                // Handle errors
-                if(data.error) {
-                    chatSocket.close()
-                    $("#onError span").text(data.error)
-                    $("#onError").show()
-                    return
-                } else {
-                    $("#onChat").show()
-                }
-                
-                // Create the message element
-                var el = $('<div class="message"><span></span><p></p></div>')
-                $("span", el).text(data.user)
-                $("p", el).text(data.message)
-                $(el).addClass(data.kind)
-                if(data.user == '@username') $(el).addClass('me')
-                $('#messages').append(el)
-                
-                // Update the members list
-                $("#members").html('') 
-                $(data.members).each(function() {
-                    $("#members").append('<li>' + this + '</li>')
-                })
-            }
-            
-            var handleReturnKey = function(e) {
-                if(e.charCode == 13 || e.keyCode == 13) {
-                    e.preventDefault()
-                    sendMessage()
-                } 
-            }
-            
-            $("#talk").keypress(handleReturnKey)  
-            
-            chatSocket.onmessage = receiveEvent
-            
-        })
-    
+       connect("@routes.Application.chat(username).webSocketURL(request)")
     </script>
-    
 }

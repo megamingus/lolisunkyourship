@@ -57,6 +57,10 @@
           $(data.members).each(function() {
               $("#members").append('<li>' + this + '</li>')
           })
+          if(data.data){
+              var json=JSON.parse(data.data)
+              $('#'+json.tile).addClass(json.state);
+          }
       }
 
       var handleReturnKey = function(e) {

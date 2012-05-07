@@ -34,8 +34,12 @@ body {
 
 /* Styles you shouldn't keep as they are for displaying this base example only */
 .content .span10,
-.content .span4 {
+.content {
     min-height: 500px;
+}
+
+.span4 {
+    min-height: 400px;
 }
 
 /* Give a quick and non-cross-browser friendly divider */
@@ -101,7 +105,7 @@ body {
 .message p {
     display: inline-block;
     margin: 0;
-    width: 500px;
+    width: 145px;
 }
 
 .message.me {
@@ -110,4 +114,18 @@ body {
 
 .message.join, .message.quit {
     background: #D9E7FB;
+}
+
+.tile{
+    float: left;
+    width:43px;
+    height:43px;
+    display:block;
+    overflow:hidden;
+    border-style: solid;
+    border-width: 1px;
+}
+.boardRow{
+    clear:both;
+    margin: 0 40px;
 }

@@ -11,25 +11,62 @@
             <strong>Oops!</strong> <span></span>
         </p>
     </div>
-     <!--<div id="board" class="row">
-         <div class="span10" id="boardMain">
-             ...
-             </div>
-     </div>  -->
     <div id="onChat" class="row">
-        <div class="span10" id="main">
+        <div class="span10" id="board">
+
+        </div>
+        <div class="span2">
+            <h2>Players</h2>
+            <ul id="members">
+            </ul>
+        </div>
+        <div class="span4" id="main">
             <div id="messages">
             </div>
             <textarea id="talk"></textarea>
         </div>
-        <div class="span4">
-            <h2>Members</h2>
-            <ul id="members">
-            </ul>
-        </div>
     </div>
     
     <script type="text/javascript" charset="utf-8">
-       connect("@routes.Application.chat(username).webSocketURL(request)")
+      // connect("@username","@routes.Application.chat(username).webSocketURL(request)")
+      conn=new WsConnection("@routes.Application.chat(username).webSocketURL(request)",chatRecieve)
+
+
+      function chatRecieve(event) {
+          var data = JSON.parse(event.data)
+
+          // Handle errors
+          if(data.error) {
+              conn.close()
+              $("#onError span").text(data.error)
+              $("#onError").show()
+              return
+          } else {
+              $("#onChat").show()
+          }
+
+          // Create the message element
+          var el = $('<div class="message"><span></span><p></p></div>')
+          $("span", el).text(data.user)
+          $("p", el).text(data.message)
+          $(el).addClass(data.kind)
+          if(data.user == "@username") $(el).addClass('me')
+          $('#messages').append(el)
+
+          // Update the members list
+          $("#members").html('')
+          $(data.members).each(function() {
+              $("#members").append('<li>' + this + '</li>')
+          })
+      }
+
+      var handleReturnKey = function(e) {
+          if(e.charCode == 13 || e.keyCode == 13) {
+              e.preventDefault()
+              conn.ws({send:{text: $("#talk").val()},beforeSend:function(){$("#talk").val('')}})
+          }
+      }
+      $("#talk").keypress(handleReturnKey)
+
     </script>
 }

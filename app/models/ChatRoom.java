@@ -104,9 +104,9 @@ public class ChatRoom extends UntypedActor {
             // Received a UserAction message
             UserAction userAction = (UserAction)message;
             if (userAction.action.equals(UserAction.Action.ATTACK)) {
-                notifyAll("userAction", userAction.username," is attacking "+userAction.text.substring(7));
+                notifyAll("attack", userAction.username," is attacking "+userAction.text);
             }  else{
-                 notifyAll("userAction", userAction.username, userAction.text);
+                 notifyAll("talk", userAction.username, userAction.text);
             }
             
         } else if(message instanceof Quit)  {

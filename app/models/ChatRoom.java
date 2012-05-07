@@ -77,7 +77,8 @@ public class ChatRoom extends UntypedActor {
     }
     
     // Members of this room.
-    Map<String, WebSocket.Out<JsonNode>> members = new HashMap<String, WebSocket.Out<JsonNode>>();
+    //Map<String, WebSocket.Out<JsonNode>> members = new HashMap<String WebSocket.Out<JsonNode>>();
+    Map<String, Player> members = new HashMap<String,Player>();// WebSocket.Out<JsonNode>>();
     
     public void onReceive(Object message) throws Exception {
         
@@ -92,7 +93,12 @@ public class ChatRoom extends UntypedActor {
                 if(members.containsKey(join.username)) {
                     getSender().tell("This username is already used");
                 } else {
-                    members.put(join.username, join.channel);
+                    members.put(join.username, new Player(join.username,join.channel,members.size()==1?true:false));
+                    if(members.size()==2){
+                         for(Player player:members.values()){
+                             player.knowYourEnemy(members);
+                         }
+                    }
                     notifyAll("join", join.username, "has entered the room");
                     getSender().tell("OK");
                 }
@@ -104,9 +110,26 @@ public class ChatRoom extends UntypedActor {
             // Received a UserAction message
             UserAction userAction = (UserAction)message;
             if (userAction.action.equals(UserAction.Action.ATTACK)) {
-                notifyAll("attack", userAction.username," is attacking "+userAction.text);
+                if(members.size()==2){
+                    if(members.get(userAction.username).myTurn){
+                        //habria que evaluar primero el disparo y dps avisar por separado a cada  uno lo qeu paso,
+                        // y ver si cambiar o no el turno si es que ya disparo en ese lugar o no... pero por ahroa va... (es todo agua)
+                        notifyAll("attack", userAction.username,"attacked "+userAction.text);
+                        notifyPlayer("info",userAction.username,"Commander","We "+members.get(userAction.username).attack(userAction.text));
+                        notifyPlayer("info",members.get(userAction.username).enemy.username,"Commander","They "+members.get(userAction.username).attack(userAction.text));
+
+                        for(Player user:members.values()){
+                            user.changeTurn();
+                        }
+                    }else{
+                        notifyPlayer("error",userAction.username,"Commander","we are still preparing the torpedos, my Captain.");
+                    }
+                } else{
+                    notifyPlayer("error",userAction.username,"Commander","Sr. no foes are shown in the radars.");
+                }
             }  else{
-                 notifyAll("talk", userAction.username, userAction.text);
+                if(userAction.text != null && !userAction.text.trim().equals(""))
+                    notifyAll("talk", userAction.username, userAction.text);
             }
             
         } else if(message instanceof Quit)  {
@@ -123,10 +146,27 @@ public class ChatRoom extends UntypedActor {
         }
         
     }
-    
+
+    public void notifyPlayer(String kind,String user,String from, String text){
+
+        WebSocket.Out<JsonNode> channel= members.get(user).channel;
+        ObjectNode event = Json.newObject();
+        event.put("kind", kind);
+        event.put("user", from);
+        event.put("message", text);
+
+        ArrayNode m = event.putArray("members");
+        for(String u: members.keySet()) {
+            m.add(u);
+        }
+
+        channel.write(event);
+    }
+
     // Send a Json event to all members
     public void notifyAll(String kind, String user, String text) {
-        for(WebSocket.Out<JsonNode> channel: members.values()) {
+        for(Player player: members.values()) {
+            WebSocket.Out<JsonNode> channel= player.channel;
             ObjectNode event = Json.newObject();
             event.put("kind", kind);
             event.put("user", user);

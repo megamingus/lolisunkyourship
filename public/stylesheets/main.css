@@ -91,9 +91,9 @@ body {
 }
 
 .message span {
-    width: 70px;
+    width: 200px;
     overflow: hidden;
-    text-align: right;
+    text-align: left;
     font-weight: bold;
     margin-right: 5px;
     display: inline-block;
@@ -105,7 +105,7 @@ body {
 .message p {
     display: inline-block;
     margin: 0;
-    width: 145px;
+    width: 200px;
 }
 
 .message.me {

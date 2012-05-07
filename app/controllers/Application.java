@@ -1,8 +1,6 @@
 package controllers;
 
-import play.*;
 import play.mvc.*;
-import play.libs.F.*;
 
 import org.codehaus.jackson.*;
 
@@ -20,30 +18,30 @@ public class Application extends Controller {
     }
   
     /**
-     * Display the chat room.
+     * Display the battle room.
      */
-    public static Result chatRoom(String username) {
+    public static Result battleRoom(String username) {
 
 
         if(username == null || username.trim().equals("")) {
             flash("error", "Please choose a valid username.");
             return redirect(routes.Application.index());
         }
-        return ok(chatRoom.render(username));
+        return ok(battleRoom.render(username));
     }
     
     /**
-     * Handle the chat websocket.
+     * Handle the battle websocket.
      */
-    public static WebSocket<JsonNode> chat(final String username) {
+    public static WebSocket<JsonNode> battle(final String username) {
         return new WebSocket<JsonNode>() {
             
             // Called when the Websocket Handshake is done.
             public void onReady(In<JsonNode> in, Out<JsonNode> out){
                 
-                // Join the chat room.
+                // Join the battle room.
                 try { 
-                    ChatRoom.join(username, in, out);
+                    BattleRoom.join(username, in, out);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

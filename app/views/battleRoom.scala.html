@@ -28,8 +28,7 @@
     </div>
     
     <script type="text/javascript" charset="utf-8">
-      // connect("@username","@routes.Application.chat(username).webSocketURL(request)")
-      conn=new WsConnection("@routes.Application.chat(username).webSocketURL(request)",chatRecieve)
+      conn=new WsConnection("@routes.Application.battle(username).webSocketURL(request)",chatRecieve)
 
 
       function chatRecieve(event) {

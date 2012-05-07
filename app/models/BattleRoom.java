@@ -17,12 +17,12 @@ import java.util.*;
 import static java.util.concurrent.TimeUnit.*;
 
 /**
- * A chat room is an Actor.
+ * A room is an Actor.
  */
-public class ChatRoom extends UntypedActor {
+public class BattleRoom extends UntypedActor {
     
     // Default room.
-    static ActorRef defaultRoom = Akka.system().actorOf(new Props(ChatRoom.class));
+    static ActorRef defaultRoom = Akka.system().actorOf(new Props(BattleRoom.class));
     
     // Create a Robot, just for fun.
     static {
@@ -115,7 +115,7 @@ public class ChatRoom extends UntypedActor {
                         //habria que evaluar primero el disparo y dps avisar por separado a cada  uno lo qeu paso,
                         // y ver si cambiar o no el turno si es que ya disparo en ese lugar o no... pero por ahroa va... (es todo agua)
                         notifyAll("attack", userAction.username,"attacked "+userAction.text);
-                        notifyPlayer("info",userAction.username,"Commander","We "+members.get(userAction.username).attack(userAction.text));
+                        notifyPlayer("info", userAction.username, "Commander", "We " + members.get(userAction.username).attack(userAction.text));
                         notifyPlayer("info",members.get(userAction.username).enemy.username,"Commander","They "+members.get(userAction.username).attack(userAction.text));
 
                         for(Player user:members.values()){

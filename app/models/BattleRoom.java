@@ -115,9 +115,9 @@ public class BattleRoom extends UntypedActor {
                         //habria que evaluar primero el disparo y dps avisar por separado a cada  uno lo qeu paso,
                         // y ver si cambiar o no el turno si es que ya disparo en ese lugar o no... pero por ahroa va... (es todo agua)
                         notifyAll("attack", userAction.username,"attacked "+userAction.text);
-                        notifyPlayer("info", userAction.username, "Commander", "We " + members.get(userAction.username).attack(userAction.text),
+                        notifyPlayer("info", userAction.username, "Commander", members.get(userAction.username).attack(userAction.text),
                                 "{\"tile\":\""+userAction.text+"\",\"state\":\"miss\"}");//deberia sacar water de lo qeu me de el ataque
-                        notifyPlayer("info",members.get(userAction.username).enemy.username,"Commander","They "+members.get(userAction.username).attack(userAction.text),"");
+                        notifyPlayer("info",members.get(userAction.username).enemy.username,"Commander",members.get(userAction.username).enemyResult(userAction.text),"");
 
                         for(Player user:members.values()){
                             user.changeTurn();

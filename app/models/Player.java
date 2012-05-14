@@ -19,7 +19,6 @@ public class Player {
     final String username;
     final WebSocket.Out<JsonNode> channel;
     boolean myTurn;
-    Board board;
     Player enemy=null;
     List<Ship> ships;
     List<String> previousShots;
@@ -30,7 +29,6 @@ public class Player {
         this.username = username;
         this.channel = channel;
         this.myTurn  =myTurn;
-        board=new Board();
         ships = createShips();
         previousShots = new ArrayList<String>();
         defaultStrategy();

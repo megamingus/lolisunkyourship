@@ -132,3 +132,6 @@ body {
 .miss{
     background: #D9E7FB;
 }
+.hit{
+    background: #f55;
+}

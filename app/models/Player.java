@@ -23,7 +23,7 @@ public class Player {
     List<Ship> ships;
     List<String> previousShots;
     /*Esto por ahi hay q cambiarlo */
-    ShootResults result;
+
 
     public Player(String username, WebSocket.Out<JsonNode> channel,boolean myTurn) {
         this.username = username;
@@ -57,36 +57,18 @@ public class Player {
         }
 
     }
-   public String attack(String tile){
+   public ShootResults attack(String tile){
+       ShootResults result = enemy.shoot(tile,previousShots);
        previousShots.add(tile);
-       return enemy.shoot(tile);
+       return result;
    }
 
-    public String enemyResult(String tile){
-        switch(result){
-                  case ALREADY_SHOT:return "The grogged monkeys shot the same spot again!";
-                  case HIT: return "Arrrgh! We got hit!";
-                  case SUNK: return "Abandon ship!!!";
-                  case WATER:return "Hurrah!! They missed!";
-                  default: return "Something went wrong in Player.shoot!";
-              }
-    }
 
-    public String shoot (String tile){
-        result = checkResult(tile);
-        switch(result){
-          case ALREADY_SHOT:return "Captain, we already shot "+tile;
-          case HIT: return "Bull's eye Captain!";
-          case SUNK: return "We sent them straight to Hell my Captain!";
-          case WATER:return "We missed!";
-          default: return "Something went wrong in Player.shoot!";
-      }
-    }
 
     //Todo: Mejorar la parte de SUNK, que saque al barco de la lista o algo
-    public ShootResults checkResult(String tile){
+    public ShootResults shoot(String tile,List<String> previousShots){
         for(String shot:previousShots){
-            if(previousShots.equals(shot)){
+            if(shot.equals(tile)){
                 return ShootResults.ALREADY_SHOT;
             }
         }
@@ -94,10 +76,11 @@ public class Player {
         for(Ship ship:ships){
             for(int j=0;j<ship.getPositions().length;j++){
                 if(ship.getPositions()[j].equals(tile)){
+                    ship.setHits(ship.getHits()+1);
+                    System.out.println("hits: "+ship.getHits()+" size:"+ship.getSize());
                     if(ship.getHits()==ship.getSize()){
                         return ShootResults.SUNK;
                     }else{
-                        ship.setHits(ship.getHits()+1);
                         return ShootResults.HIT;
                     }
                 }

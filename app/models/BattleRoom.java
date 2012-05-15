@@ -112,21 +112,15 @@ public class BattleRoom extends UntypedActor {
             if (userAction.action.equals(UserAction.Action.ATTACK)) {
                 if(members.size()==2){
                     if(members.get(userAction.username).myTurn){
-                        //habria que evaluar primero el disparo y dps avisar por separado a cada  uno lo qeu paso,
-                        // y ver si cambiar o no el turno si es que ya disparo en ese lugar o no... pero por ahroa va... (es todo agua)
-                        notifyAll("attack", userAction.username,"attacked "+userAction.text);
-                        notifyPlayer("info", userAction.username, "Commander", members.get(userAction.username).attack(userAction.text),
-                                "{\"tile\":\""+userAction.text+"\",\"state\":\"miss\"}");//deberia sacar water de lo qeu me de el ataque
-                        notifyPlayer("info",members.get(userAction.username).enemy.username,"Commander",members.get(userAction.username).enemyResult(userAction.text),"");
-
+                        communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
                         for(Player user:members.values()){
                             user.changeTurn();
                         }
                     }else{
-                        notifyPlayer("error",userAction.username,"Commander","we are still preparing the torpedos, my Captain.","");
+                        notifyPlayer("error",userAction.username,"Commander","we are still preparing the torpedos, my Captain.",Json.toJson(""));
                     }
                 } else{
-                    notifyPlayer("error",userAction.username,"Commander","Sr. no foes are shown in the radars.","");
+                    notifyPlayer("error",userAction.username,"Commander","Sr. no foes are shown in the radars.",Json.toJson(""));
                 }
             }  else{
                 if(userAction.text != null && !userAction.text.trim().equals(""))
@@ -148,14 +142,32 @@ public class BattleRoom extends UntypedActor {
         
     }
 
-    public void notifyPlayer(String kind,String user,String from, String text,String json){
+    public void communicateResult(ShootResults result,String player,String tile){
+         switch (result){
+            case ALREADY_SHOT:notifyResult(player,tile,"Captain, we already shot "+tile,
+                       "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss"))); break;
+            case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit"))); break;
+            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new msg(tile,"hit"))); break;
+            case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss"))); break;
+            default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
+        }
+
+    }
+
+    public void notifyResult(String player,String messageAll,String messagePlayer1,String messagePlayer2,JsonNode json){
+        notifyAll("attack", player,"attacked "+messageAll);
+        notifyPlayer("info", player, "Commander", messagePlayer1,json);//deberia sacar water de lo qeu me de el ataque
+        notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,Json.toJson(""));
+    }
+
+    public void notifyPlayer(String kind,String user,String from, String text,JsonNode json){
 
         WebSocket.Out<JsonNode> channel= members.get(user).channel;
         ObjectNode event = Json.newObject();
         event.put("kind", kind);
         event.put("user", from);
         event.put("message", text);
-        event.put("data", json);
+        event.put("data", json.toString());
 
         ArrayNode m = event.putArray("members");
         for(String u: members.keySet()) {
@@ -213,6 +225,19 @@ public class BattleRoom extends UntypedActor {
 
         
     }
+    public static class msg {
+        public String tile;
+      public  String state;
+       // String text;
+
+         public msg(String tile,String state) {
+             this.tile = tile;
+             this.state=state;
+         //    this.text = text;
+         }
+
+
+     }
     
     public static class Quit {
         

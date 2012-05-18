@@ -30,7 +30,6 @@ public class Player {
         this.channel = channel;
         this.myTurn  =myTurn;
         ships = createShips();
-        result=ShootResults.WATER;
         previousShots = new ArrayList<String>();
         defaultStrategy();
     }

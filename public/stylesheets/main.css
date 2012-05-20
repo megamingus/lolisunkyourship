@@ -136,18 +136,19 @@ body {
     background: #f55;
 }
 
+.win{
+      background: #f55;
+   }
+
 .boat{
 
     background: #g55;
 }
 
-.sunk{
-
-}
 
 .ship{
 
-    background: #00FF00;
+    background: #g55;
 
 }
 

@@ -147,9 +147,9 @@ public class BattleRoom extends UntypedActor {
             case ALREADY_SHOT:notifyResult(player,tile,"Captain, we already shot "+tile,
                        "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
-            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
-            case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"sunk",members.get(player).enemy.username))); break;
-            case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
+            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new msg(tile,"sunk",members.get(player).enemy.username))); break;
+            case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss","enemy"))); break;
+            case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
             default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
         }
 

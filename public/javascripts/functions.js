@@ -55,9 +55,33 @@ $(document).ready(function() {
         html+="</div>"
           html2+="</div>"
     }
+    paintDefault();
     $("#board").html(html)
     $("#My_board").html(html2)
+
 })
+
+                 function void paintDefault(){
+
+                    $('#My_board_A1').addClass('ship');
+                    $('#My_board_A2').addClass('ship');
+                    $('#My_board_B3').addClass('ship');
+                    $('#My_board_C3').addClass('ship');
+                    $('#My_board_D3').addClass('ship');
+                    $('#My_board_G6').addClass('ship');
+                    $('#My_board_G7').addClass('ship');
+                    $('#My_board_G8').addClass('ship');
+                    $('#My_board_a5').addClass('ship');
+                    $('#My_board_B5').addClass('ship');
+                    $('#My_board_C5').addClass('ship');
+                    $('#My_board_D5').addClass('ship');
+                    $('#My_board_J5').addClass('ship');
+                    $('#My_board_J6').addClass('ship');
+                    $('#My_board_J7').addClass('ship');
+                    $('#My_board_J8').addClass('ship');
+                    $('#My_board_J9').addClass('ship');
+
+                       }
 
 
 function attack(tile){

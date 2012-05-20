@@ -145,6 +145,12 @@ body {
 
 }
 
+.ship{
+
+    background: #00FF00;
+
+}
+
 .sunk{
 background: #f66;
 }

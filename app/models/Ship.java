@@ -25,7 +25,7 @@ public class Ship {
         this.name=name;
          positions = new String[size];
         hits = 0;
-        sunk=true;
+        sunk=false;
     }
 
     public String[] getPositions() {

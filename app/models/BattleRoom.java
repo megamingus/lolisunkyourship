@@ -93,7 +93,7 @@ public class BattleRoom extends UntypedActor {
                 if(members.containsKey(join.username)) {
                     getSender().tell("This username is already used");
                 } else {
-                    members.put(join.username, new Player(join.username,join.channel,members.size()==1?true:false));
+                    members.put(join.username, new Player(join.username,join.channel, members.size() == 1));
                     if(members.size()==2){
                          for(Player player:members.values()){
                              player.knowYourEnemy(members);
@@ -117,10 +117,10 @@ public class BattleRoom extends UntypedActor {
                             user.changeTurn();
                         }
                     }else{
-                        notifyPlayer("error",userAction.username,"Commander","we are still preparing the torpedos, my Captain.",Json.toJson(""));
+                        notifyPlayer("error",userAction.username,"Commander","We are still preparing the torpedos, my Captain.",Json.toJson(""));
                     }
                 } else{
-                    notifyPlayer("error",userAction.username,"Commander","Sr. no foes are shown in the radars.",Json.toJson(""));
+                    notifyPlayer("error",userAction.username,"Commander","Sir, no foes are shown on the radars.",Json.toJson(""));
                 }
             }  else{
                 if(userAction.text != null && !userAction.text.trim().equals(""))
@@ -145,10 +145,11 @@ public class BattleRoom extends UntypedActor {
     public void communicateResult(ShootResults result,String player,String tile){
          switch (result){
             case ALREADY_SHOT:notifyResult(player,tile,"Captain, we already shot "+tile,
-                       "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss"))); break;
-            case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit"))); break;
-            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new msg(tile,"hit"))); break;
-            case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss"))); break;
+                       "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
+            case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
+            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
+            case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"sunk",members.get(player).enemy.username))); break;
+            case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
             default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
         }
 
@@ -156,8 +157,10 @@ public class BattleRoom extends UntypedActor {
 
     public void notifyResult(String player,String messageAll,String messagePlayer1,String messagePlayer2,JsonNode json){
         notifyAll("attack", player,"attacked "+messageAll);
-        notifyPlayer("info", player, "Commander", messagePlayer1,json);//deberia sacar water de lo qeu me de el ataque
-        notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,Json.toJson(""));
+        //Notify the player
+        notifyPlayer("info", player, "Commander", messagePlayer1,json);
+        //Notify the enemy
+        notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
     }
 
     public void notifyPlayer(String kind,String user,String from, String text,JsonNode json){
@@ -211,7 +214,7 @@ public class BattleRoom extends UntypedActor {
     
     public static class UserAction {
 
-        public enum Action { CHAT, ATTACK};
+        public enum Action {CHAT, ATTACK}
 
         final String username;
         final String text;
@@ -226,18 +229,22 @@ public class BattleRoom extends UntypedActor {
         
     }
     public static class msg {
-        public String tile;
-      public  String state;
-       // String text;
+          String tile;
+          String state;
+          String board;
+           //String text;
 
-         public msg(String tile,String state) {
-             this.tile = tile;
-             this.state=state;
-         //    this.text = text;
-         }
+             public msg(String tile,String state,String board) {
+                 this.tile = tile;
+                 this.state=state;
+                 this.board=board;
+             //    this.text = text;
+             }
 
 
-     }
+        }
+
+
     
     public static class Quit {
         

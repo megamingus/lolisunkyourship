@@ -16,14 +16,15 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class Player {
+    final int shipNumber = 5;
     final String username;
     final WebSocket.Out<JsonNode> channel;
     boolean myTurn;
     Player enemy=null;
     List<Ship> ships;
     List<String> previousShots;
-    /*Esto por ahi hay q cambiarlo */
-
+    List<String> shipPositions;
+    int sunkenShips;
 
     public Player(String username, WebSocket.Out<JsonNode> channel,boolean myTurn) {
         this.username = username;
@@ -31,11 +32,16 @@ public class Player {
         this.myTurn  =myTurn;
         ships = createShips();
         previousShots = new ArrayList<String>();
+        sunkenShips = 0;
         defaultStrategy();
+        createPositionList();
+
     }
 
+
+
     private List<Ship> createShips() {
-        List<Ship> shipList = new ArrayList<Ship>(5);
+        List<Ship> shipList = new ArrayList<Ship>(shipNumber);
         shipList.add(new Ship(2,"Patrol boat"));
         shipList.add(new Ship(3,"Destroyer"));
         shipList.add(new Ship(3,"Submarine"));
@@ -65,7 +71,7 @@ public class Player {
 
 
 
-    //Todo: Mejorar la parte de SUNK, que saque al barco de la lista o algo
+
     public ShootResults shoot(String tile,List<String> previousShots){
         for(String shot:previousShots){
             if(shot.equals(tile)){
@@ -74,17 +80,25 @@ public class Player {
         }
 
         for(Ship ship:ships){
-            for(int j=0;j<ship.getPositions().length;j++){
-                if(ship.getPositions()[j].equals(tile)){
-                    ship.setHits(ship.getHits()+1);
-                    System.out.println("hits: "+ship.getHits()+" size:"+ship.getSize());
-                    if(ship.getHits()==ship.getSize()){
-                        return ShootResults.SUNK;
-                    }else{
-                        return ShootResults.HIT;
-                    }
+            if(!ship.getSunk()){
+                for(int j=0;j<ship.getPositions().length;j++){
+                     if(ship.getPositions()[j].equals(tile)){
+                        ship.setHits(ship.getHits()+1);
+                         System.out.println("hits: "+ship.getHits()+" size:"+ship.getSize());
+                         if(ship.getHits()==ship.getSize()){
+                             ship.setSunk(true);
+                             sunkenShips+=1;
+                             if(sunkenShips==shipNumber){
+                                return ShootResults.LOST_GAME;
+                             }
+                             return ShootResults.SUNK;
+                         }
+                         return ShootResults.HIT;
+                     }
+
                 }
             }
+
         }
 
         return ShootResults.WATER;
@@ -95,13 +109,12 @@ public class Player {
    public void addShipPositions(List<String[]> shipPositions){
        for(int i=0; i<shipPositions.size();i++){
             ships.get(i).setPositions(shipPositions.get(i));
-
         }
 
    }
 
     public void defaultStrategy(){
-        List<String[]>strategy = new ArrayList<String[]>(5);
+        List<String[]>strategy = new ArrayList<String[]>(shipNumber);
 
         String[] s1 = new String[2];
         s1[0]="A1";
@@ -137,4 +150,19 @@ public class Player {
 
         addShipPositions(strategy);
     }
+
+
+    private void createPositionList() {
+        shipPositions=new ArrayList<String>();
+        for(Ship ship : ships){
+            for(String position : ship.getPositions()){
+                shipPositions.add(position);
+            }
+        }
+       }
+
+    public List<String> getShipPositions(){
+        return shipPositions;
+    }
+
 }

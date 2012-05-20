@@ -17,9 +17,7 @@ public class Ship {
 
     private int size;
     private String name;
-
-
-
+    private boolean sunk;
     private int hits;
 
     public Ship(int size,String name){
@@ -27,6 +25,7 @@ public class Ship {
         this.name=name;
          positions = new String[size];
         hits = 0;
+        sunk=true;
     }
 
     public String[] getPositions() {
@@ -53,4 +52,12 @@ public class Ship {
     public void setHits(int hits) {
             this.hits = hits;
         }
+
+    public boolean getSunk() {
+           return sunk;
+       }
+
+    public void setSunk(boolean sunk) {
+           this.sunk = sunk;
+     }
 }

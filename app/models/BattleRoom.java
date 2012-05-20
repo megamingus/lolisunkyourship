@@ -49,8 +49,7 @@ public class BattleRoom extends UntypedActor {
                    if(event.has("text")){
                       defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("text").asText()));
                    }
-                   
-               } 
+               }
             });
             
             // When the socket is closed.
@@ -100,6 +99,8 @@ public class BattleRoom extends UntypedActor {
                          }
                     }
                     notifyAll("join", join.username, "has entered the room");
+                    // Send strategy
+                    notifyPlayer("strategy",join.username,"Commander","The fleet is positioned",Json.toJson(members.get(join.username).getShipPositions()));
                     getSender().tell("OK");
                 }
             } else{
@@ -148,7 +149,7 @@ public class BattleRoom extends UntypedActor {
             case ALREADY_SHOT:notifyResult(player,tile,"Captain, we already shot "+tile,
                        "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
-            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new msg(tile,"sunk",members.get(player).enemy.username))); break;
+            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).getShip(tile).getPositions()))); break;
             case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
             default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
@@ -198,7 +199,8 @@ public class BattleRoom extends UntypedActor {
             channel.write(event);
         }
     }
-    
+
+
     // -- Messages
     
     public static class Join {
@@ -245,8 +247,24 @@ public class BattleRoom extends UntypedActor {
 
         }
 
+    public static class SunkMsg {
+            public String tile;
+           public String state;
+           public  String board;
+              //String text;
+            public String[] shipPositions;
 
-    
+                public SunkMsg(String tile,String state,String board,String[] shipPositions) {
+                    this.tile = tile;
+                    this.state=state;
+                    this.board=board;
+                //    this.text = text;
+                    this.shipPositions=shipPositions;
+                }
+
+
+           }
+
     public static class Quit {
         
         final String username;

@@ -25,25 +25,38 @@ WsConnection.prototype.ws=function(json){
 }
 
 $(document).ready(function() {
+
     var letters = new Array("A","B","C","D","E","F","G","H","I","J");
     //creo la primer fila de numeros
     var html="<div class='boardRow'>"
+    var html2="<div class='My_boardRow'>"
+
+
     html+="<span class='tile'></span>"
+      html2+="<span class='My_tile'></span>"
     for (var i = 1; i < 11; i++) {
         html+="<span class='tile'>"+i+"</span>"
+        html2+="<span class='My_tile'>"+i+"</span>"
     }
     html+="</div>"
+        html2+="</div>"
     //creo las filas
 
     for (var i = 0; i < letters.length; i++) {
         html+="<div class='boardRow'>"
         html+="<span class='tile'>"+letters[i]+"</span>"
+
+          html2+="<div class='My_boardRow'>"
+          html2+="<span class='My_tile'>"+letters[i]+"</span>"
         for (var j = 1; j <11; j++) {
             html+="<span class='tile' id="+letters[i]+j+" onclick='attack(\""+letters[i]+j+"\")'></span>"
+             html2+="<span class='My_tile' id=My_board_"+letters[i]+j+"></span>"
         }
         html+="</div>"
+          html2+="</div>"
     }
     $("#board").html(html)
+    $("#My_board").html(html2)
 })
 
 

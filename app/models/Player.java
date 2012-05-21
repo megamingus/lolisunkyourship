@@ -165,4 +165,15 @@ public class Player {
         return shipPositions;
     }
 
+    public Ship getShip(String tile){
+        for(Ship ship : ships){
+            for (String position : ship.getPositions()){
+                if(position.equals(tile)){
+                    return ship;
+                }
+            }
+        }
+        return null;
+    }
+
 }

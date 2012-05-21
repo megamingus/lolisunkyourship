@@ -1,4 +1,4 @@
-@(username: String)
+@(username: String,key:String)
 
 @main(username) {
     
@@ -28,7 +28,7 @@
     </div>
     
     <script type="text/javascript" charset="utf-8">
-      conn=new WsConnection("@routes.Application.battle(username).webSocketURL(request)",chatRecieve)
+      conn=new WsConnection("@routes.Application.battle(key,username).webSocketURL(request)",chatRecieve)
 
 
       function chatRecieve(event) {

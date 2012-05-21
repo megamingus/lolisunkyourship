@@ -22,8 +22,7 @@ import static java.util.concurrent.TimeUnit.*;
 public class BattleRoom extends UntypedActor {
     
     // Default room.
-    static ActorRef defaultRoom = Akka.system().actorOf(new Props(BattleRoom.class));
-    
+    //static ActorRef defaultRoom = Akka.system().actorOf(new Props(BattleRoom.class));
     // Create a Robot, just for fun.
     static {
      //   new Robot(defaultRoom);
@@ -32,7 +31,7 @@ public class BattleRoom extends UntypedActor {
     /**
      * Join the default room.
      */
-    public static void join(final String username, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) throws Exception{
+    public static void join(final ActorRef defaultRoom, final String username, WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) throws Exception{
         
         // Send the Join message to the room
         String result = (String)Await.result(ask(defaultRoom,new Join(username, out), 1000), Duration.create(1, SECONDS));
@@ -58,7 +57,7 @@ public class BattleRoom extends UntypedActor {
                public void invoke() {
                    
                    // Send a Quit message to the room.
-                   defaultRoom.tell(new Quit(username));
+                   defaultRoom.tell(new Quit(username,defaultRoom));
                    
                }
             });
@@ -79,6 +78,10 @@ public class BattleRoom extends UntypedActor {
     // Members of this room.
     //Map<String, WebSocket.Out<JsonNode>> members = new HashMap<String WebSocket.Out<JsonNode>>();
     Map<String, Player> members = new HashMap<String,Player>();// WebSocket.Out<JsonNode>>();
+
+    public int getMemberQty(){
+        return members.size();
+    }
     
     public void onReceive(Object message) throws Exception {
         
@@ -135,6 +138,9 @@ public class BattleRoom extends UntypedActor {
             members.remove(quit.username);
             
             notifyAll("quit", quit.username, "has leaved the room");
+            if(members.size()<=0){
+                ChatRoom.stop(quit.actor);
+            }
         
         } else {
             unhandled(message);
@@ -194,7 +200,7 @@ public class BattleRoom extends UntypedActor {
             channel.write(event);
         }
     }
-    
+
     // -- Messages
     
     public static class Join {
@@ -211,7 +217,7 @@ public class BattleRoom extends UntypedActor {
     
     public static class UserAction {
 
-        public enum Action { CHAT, ATTACK};
+        public enum Action { CHAT, ATTACK,PLAY};
 
         final String username;
         final String text;
@@ -242,9 +248,11 @@ public class BattleRoom extends UntypedActor {
     public static class Quit {
         
         final String username;
+        final ActorRef actor;
         
-        public Quit(String username) {
+        public Quit(String username,ActorRef actor) {
             this.username = username;
+            this.actor=actor;
         }
         
     }

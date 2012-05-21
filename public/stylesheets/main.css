@@ -107,6 +107,23 @@ body {
     margin: 0;
     width: 200px;
 }
+.chat_message span {
+    width: 70px;
+    overflow: hidden;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: -1px;
+}
+
+.chat_message p {
+    display: inline-block;
+    margin: 0;
+    width: 500px;
+}
 
 .message.me {
     background: #FFC;

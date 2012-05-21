@@ -132,28 +132,23 @@ body {
 .miss{
     background: #D9E7FB;
 }
+
 .hit{
-    background: #f55;
+    background: rgb(255,255,0);
 }
 
 .win{
       background: #f55;
    }
 
-.boat{
-
-    background: #g55;
-}
-
-
 .ship{
 
-    background: #g55;
+    background: rgb(0,255,0);
 
 }
 
 .sunk{
-background: #f66;
+background:rgb(255,0,0);
 }
 
 .My_tile{

@@ -33,9 +33,10 @@
       conn=new WsConnection("@routes.Application.battle(username).webSocketURL(request)",chatRecieve)
 
 
+
       function chatRecieve(event) {
           var data = JSON.parse(event.data)
-                       console.log(data);
+
           // Handle errors
           if(data.error) {
               conn.close()
@@ -51,6 +52,7 @@
           $("span", el).text(data.user+":")
           $("p", el).text(data.message)
           $(el).addClass(data.kind)
+
           if(data.user == "@username") $(el).addClass('me')
           $('#messages').append(el)
 
@@ -59,18 +61,45 @@
           $(data.members).each(function() {
               $("#members").append('<li>' + this + '</li>')
           })
+
+
           if(data.data){
 
               var json=JSON.parse(data.data)
-             if(json.board == "@username"){
+
+
+      for(x=0;x < json.length;x++){
+                 $('#My_board_'+json[x]).addClass('ship');
+        }
+        if(json.board == "@username"){
+                   if(json.state == 'sunk'){
+
+        for(positions in json.shipPositions){
+        $('#My_board_'+json.shipPositions[positions]).addClass(json.state);
+
+         }
+        } else{
+                 console.log(json)
         $('#My_board_'+json.tile).addClass(json.state);
+
+         }
+
+        }else {
+
+        if(json.state == 'sunk'){
+
+
+       for(positions in json.shipPositions){
+        $('#'+json.shipPositions[positions]).addClass(json.state);
+
+        }
 
         }else{
         $('#'+json.tile).addClass(json.state);
+
         }
 
-
-
+        }
           }
       }
 

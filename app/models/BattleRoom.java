@@ -265,6 +265,10 @@ public class BattleRoom extends UntypedActor {
 
            }
 
+
+
+
+
     public static class Quit {
         
         final String username;

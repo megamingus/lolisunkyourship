@@ -1,0 +1,35 @@
+.content {
+    background-color: #fff;
+    padding: 20px;
+    margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    min-height: 10px;
+}
+
+.content .span10,
+.content .span4 {
+    min-height: 500px;
+}
+.message span {
+    width: 70px;
+    overflow: hidden;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: -1px;
+}
+
+.message p {
+
+    display: inline-block;
+    margin: 0;
+    width: 500px;
+}

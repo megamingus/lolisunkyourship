@@ -8,5 +8,5 @@ package models;
  * To change this template use File | Settings | File Templates.
  */
 public enum ShootResults {
-    WATER,HIT,SUNK,ALREADY_SHOT
+    WATER,HIT,SUNK,ALREADY_SHOT,LOST_GAME
 }

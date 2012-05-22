@@ -27,7 +27,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * A chat room is an Actor.
  */
-public class ChatRoom extends UntypedActor{
+public class  ChatRoom extends UntypedActor{
 
    // ActorRef defaultRoom = Akka.system().actorOf(new Props(BattleRoom.class));
 
@@ -198,6 +198,7 @@ public class ChatRoom extends UntypedActor{
             Quit quit = (Quit)message;
 
             members.remove(quit.username);
+            waiting2Play.remove(quit.username);
 
             notifyAll("quit", quit.username, "has leaved the room");
 

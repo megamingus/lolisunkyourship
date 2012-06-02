@@ -1,7 +1,11 @@
 @(username: String,key:String)
 
 @main(username) {
-    
+<script src="@routes.Assets.at("javascripts/MiscFuncs.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery.event.drag-2.2.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery.event.drop-2.2.js")" type="text/javascript"></script>
+
+
     <div class="page-header">
         <h1>Welcome to the Battle room <small>You are captain @username</small></h1>
     </div>
@@ -22,10 +26,15 @@
             <ul id="members">
             </ul>
         </div>
-        <div class="span4" id="images">
-            <div id="dragAndDRop">
-                <img id="ship4" src="@routes.Assets.at("images/Ship.png")" draggable="true" ondragstart="dragIt(event);">
+        <div class="span4" id="shipyard">
+            <!--<div id="dragAndDRop">
+             <div id="ship1Div" draggable="true" class="draggableShip" ondragstart="dragIt('ship1Div',event);"  onclick="toggleDirection(this)" horizontal="true">
+                <img id="ship1" src="@routes.Assets.at("images/aircraftCarrier.png")">
             </div>
+            <div id="ship2Div" draggable="true" class="draggableShip" ondragstart="dragIt('ship2Div',event);"  onclick="toggleDirection(this)" horizontal="true">
+                <img id="ship4" src="@routes.Assets.at("images/Ship.png")">
+            </div>
+            </div>  -->
             <input class="btn" onclick="ready()">
         </div>
 
@@ -37,6 +46,7 @@
     </div>
     
     <script type="text/javascript" charset="utf-8">
+
       conn=new WsConnection("@routes.Application.battle(key,username).webSocketURL(request)",chatRecieve)
 
          function ready(){
@@ -44,6 +54,7 @@
                     document.getElementById("board").style.display ="block";
                     document.getElementById("main").style.display ="block";
                     document.getElementById("images").style.display ="none";
+
         }
 
       function chatRecieve(event) {

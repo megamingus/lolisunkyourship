@@ -29,25 +29,24 @@ $(document).ready(function() {
     var letters = new Array("A","B","C","D","E","F","G","H","I","J");
     //creo la primer fila de numeros
     var html="<div class='boardRow'>"
-    var html2="<div class='My_boardRow'>"
+    var html2="<div id='boardContainer' class='My_boardRow'>"
 
-
-    html+="<span class='tile'></span>"
+/*    html+="<span class='tile'></span>"
       html2+="<span class='My_tile'></span>"
     for (var i = 1; i < 11; i++) {
         html+="<span class='tile'>"+i+"</span>"
         html2+="<span class='My_tile'>"+i+"</span>"
     }
     html+="</div>"
-        html2+="</div>"
+        html2+="</div>"   */
     //creo las filas
 
     for (var i = 0; i < letters.length; i++) {
         html+="<div class='boardRow'>"
-        html+="<span class='tile'>"+letters[i]+"</span>"
+       // html+="<span class='tile'>"+letters[i]+"</span>"
 
           html2+="<div class='My_boardRow'>"
-          html2+="<span class='My_tile'>"+letters[i]+"</span>"
+         // html2+="<span class='My_tile'>"+letters[i]+"</span>"
         for (var j = 1; j <11; j++) {
             html+="<span class='tile' id="+letters[i]+j+" onclick='attack(\""+letters[i]+j+"\")'></span>"
              html2+="<span class='My_tile' ondrop='dropIt(event)' ondragover='event.preventDefault()' id=My_board_"+letters[i]+j+"></span>"
@@ -55,11 +54,12 @@ $(document).ready(function() {
         html+="</div>"
           html2+="</div>"
     }
-
+    html+="</div>"
+    html2+="</div>"
     $("#board").html(html)
     $("#My_board").html(html2)
 
-
+    populateShipYard()
 })
 
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 function attack(tile){
     conn.ws({send:{attack: tile}})
 }
-
+/*
 //function called when drag starts
 function dragIt(theEvent) {
 //tell the browser what to drag
@@ -76,9 +76,10 @@ function dragIt(theEvent) {
 theEvent.dataTransfer.setData("Text", theEvent.target.id);
    console.log("the id is:"+"lalala"+theEvent.target.id);
 }
+*/
 
 //function called when element drops
-
+/*
 function dropIt(theEvent) {
 //get a reference to the element being dragged
 var theData = theEvent.dataTransfer.getData("Text");
@@ -94,7 +95,7 @@ theEvent.target.appendChild(theDraggedElement);
 //instruct the browser to allow the drop
 theEvent.preventDefault();
 }
-
+     */
 /*
 function connect(username,WsURL) {
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket

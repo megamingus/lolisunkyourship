@@ -4,42 +4,6 @@ ships=[["aircraftCarrier",5], ["battleship",4],["destroyer",4]
 createDiv = (jsonObj) ->
   $('<div/>', jsonObj)
 
-  ###
-jQuery(function($){
-   $('.drag')
-      .drag("start",function( ev, dd ){
-         $( this ).css('opacity',.75);
-      })
-      .drag(function( ev, dd ){
-         $( this ).css({
-            top: dd.offsetY,
-            left: dd.offsetX
-         });
-      })
-      .drag("end",function( ev, dd ){
-         $( this ).css('opacity','');
-      });
-   $('.drop td')
-      .drop("start",function(){
-         $( this ).addClass("active");
-      })
-      .drop(function( ev, dd ){
-         $( this ).toggleClass("dropped");
-      })
-      .drop("end",function(){
-         $( this ).removeClass("active");
-      });
-   $.drop({ multi: true });
-});###
-
-###
-.drag(function( ev, dd ){
-         $( this ).css({
-            top: dd.offsetY,
-            left: dd.offsetX
-         });
-      })
-###
 selectedShip=exports ? this
 
 @populateShipYard= ->
@@ -47,7 +11,7 @@ selectedShip=exports ? this
   id:ship[0]+i
   draggable: true
   class: "draggableShip"
-  tiles: ship[1]
+  tileLength: ship[1]
   shipType:ship[0]
   #ondragstart:->dragIt("#{ship}{i}",event)
   #onclick:-> toggleDirection(this)
@@ -73,15 +37,22 @@ selectedShip=exports ? this
       #top: Math.min( dd.limit.bottom, Math.max( dd.limit.top, dd.offsetY ) )
       #left: Math.min( dd.limit.right, Math.max( dd.limit.left, dd.offsetX ) )
     })
-    $.drop({ multi: $(this).attr('tiles') });
+    $.drop({ multi: $(this).attr('tileLength') });
   )
   $(".My_tile").drop(( ev, dd )->
     $(this).css({background:'green'})
-    console.log "#{selectedShip.attr('shipType')} is  on #{$(this).attr('id').substr(9,2)}"
+    tileId=$(this).attr('id').substr(9,2)
+    console.log "#{selectedShip.attr('shipType')} is  on #{tileId}"
+    sendBoatPosition(tileId,selectedShip.attr('shipType'),selectedShip.attr('tileLength'))
   )
   $.drop({ multi: 20 });
 
-
+@sendBoatPosition=(tile,ship,length)->
+  conn.ws({send:{
+    ship: ship
+    length:length
+    tile:tile
+  }})
 
 @toggleDirection=(img)->
   horizontal= isHorizontal(img)

@@ -48,6 +48,9 @@ public class BattleRoom extends UntypedActor {
                    if(event.has("text")){
                       defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("text").asText()));
                    }
+                   if(event.has("ship")){
+                       System.out.println("Posicionar un barco "+event.get("ship").asText()+" en tile "+event.get("tile").asText());
+                   }
                }
             });
             
@@ -218,7 +221,7 @@ public class BattleRoom extends UntypedActor {
     
     public static class UserAction {
 
-        public enum Action { CHAT, ATTACK,PLAY};
+        public enum Action { CHAT, ATTACK, POSSITION_SHIP, PLAY};
 
         final String username;
         final String text;

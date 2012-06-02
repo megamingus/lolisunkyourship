@@ -26,8 +26,8 @@ selectedShip=exports ? this
     selectedShip=$(this)
     sendResetPosition(selectedShip.attr('shipType'))
     dd.limit = $div.offset();
-    dd.limit.bottom = dd.limit.top + $div.outerHeight() - $( this ).outerHeight();
-    dd.limit.right = dd.limit.left + $div.outerWidth() - $( this ).outerWidth();
+    dd.limit.bottom = dd.limit.top + $div.outerHeight() - $( this ).outerHeight()+10;
+    dd.limit.right = dd.limit.left + $div.outerWidth() - $( this ).outerWidth()+10;
   ).drag(( ev, dd )->
     $(this).css({
       position: 'absolute'
@@ -41,7 +41,7 @@ selectedShip=exports ? this
     $.drop({ multi: $(this).attr('tileLength') });
   )
   $(".My_tile").drop(( ev, dd )->
-    $(this).css({background:'green'})
+    #$(this).addClass('ship')
     tileId=$(this).attr('id').substr(9,2)
     console.log "#{selectedShip.attr('shipType')} is  on #{tileId}"
     sendBoatPosition(tileId,selectedShip.attr('shipType'),selectedShip.attr('tileLength'))
@@ -57,6 +57,12 @@ selectedShip=exports ? this
 @sendResetPosition=(ship)->
   conn.ws({send:{
     resetPosition: ship
+  }})
+
+@readyToPlay=->
+  $(".draggableShip").click(->).drag(->)
+  conn.ws({send:{
+  ready: "ready"
   }})
 
 @toggleDirection=(img)->

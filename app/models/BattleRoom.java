@@ -54,6 +54,9 @@ public class BattleRoom extends UntypedActor {
                    if(event.has("ship")){
                        System.out.println("Posicionar un barco "+event.get("ship").asText()+" en tile "+event.get("tile").asText());
                    }
+                   if(event.has("ready")){
+                       defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("ready").asText()));
+                   }
                }
             });
             
@@ -105,7 +108,7 @@ public class BattleRoom extends UntypedActor {
                     }
                     notifyAll("join", join.username, "has entered the room");
                     // Send strategy
-                    notifyPlayer("strategy",join.username,"Commander","The fleet is positioned",Json.toJson(members.get(join.username).getShipPositions()));
+                   // notifyPlayer("strategy",join.username,"Commander","The fleet is positioned",Json.toJson(members.get(join.username).getShipPositions()));
                     getSender().tell("OK");
                 }
             } else{
@@ -128,7 +131,9 @@ public class BattleRoom extends UntypedActor {
                 } else{
                     notifyPlayer("error",userAction.username,"Commander","Sir, no foes are shown on the radars.",Json.toJson(""));
                 }
-            }  else{
+            }if (userAction.action.equals(UserAction.Action.READY)) {
+                notifyPlayer("strategy",userAction.username,"Commander","The fleet is positioned",Json.toJson(members.get(userAction.username).getShipPositions()));
+            }else{
                 if(userAction.text != null && !userAction.text.trim().equals(""))
                     notifyAll("talk", userAction.username, userAction.text);
             }
@@ -224,7 +229,7 @@ public class BattleRoom extends UntypedActor {
     
     public static class UserAction {
 
-        public enum Action { CHAT, ATTACK, POSSITION_SHIP, PLAY};
+        public enum Action { CHAT, ATTACK, POSSITION_SHIP,READY, PLAY};
 
         final String username;
         final String text;

@@ -11,10 +11,10 @@
             <strong>Oops!</strong> <span></span>
         </p>
     </div>
-    <div id="onChat" class="row">
+    <div id="onChat" class="row" >
         <div class="span10" id="My_board">
         </div>
-        <div class="span10" id="board">
+        <div class="span10" id="board" style="display: none;">
 
         </div>
         <div class="span2">
@@ -22,7 +22,14 @@
             <ul id="members">
             </ul>
         </div>
-        <div class="span4" id="main">
+        <div class="span4" id="images">
+            <div id="dragAndDRop">
+                <img id="ship4" src="@routes.Assets.at("images/Ship.png")" draggable="true" ondragstart="dragIt(event);">
+            </div>
+            <input class="btn" onclick="ready()">
+        </div>
+
+        <div class="span4" id="main" style="display: none;">
             <div id="messages">
             </div>
             <textarea id="talk"></textarea>
@@ -32,7 +39,12 @@
     <script type="text/javascript" charset="utf-8">
       conn=new WsConnection("@routes.Application.battle(key,username).webSocketURL(request)",chatRecieve)
 
+         function ready(){
 
+                    document.getElementById("board").style.display ="block";
+                    document.getElementById("main").style.display ="block";
+                    document.getElementById("images").style.display ="none";
+        }
 
       function chatRecieve(event) {
           var data = JSON.parse(event.data)
@@ -111,8 +123,6 @@
           }
       }
       $("#talk").keypress(handleReturnKey)
-
-
 
     </script>
 }

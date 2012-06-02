@@ -23,11 +23,12 @@ selectedShip=exports ? this
   })) for ship, i in ships
   $div = $('#boardContainer');
   $(".draggableShip").click(-> toggleDirection(this)).drag("start",( ev, dd )->
+    selectedShip=$(this)
+    sendResetPosition(selectedShip.attr('shipType'))
     dd.limit = $div.offset();
     dd.limit.bottom = dd.limit.top + $div.outerHeight() - $( this ).outerHeight();
     dd.limit.right = dd.limit.left + $div.outerWidth() - $( this ).outerWidth();
   ).drag(( ev, dd )->
-    selectedShip=$(this)
     $(this).css({
       position: 'absolute'
       top: Math.round( dd.offsetY / 32 ) * 32
@@ -52,6 +53,10 @@ selectedShip=exports ? this
     ship: ship
     length:length
     tile:tile
+  }})
+@sendResetPosition=(ship)->
+  conn.ws({send:{
+    resetPosition: ship
   }})
 
 @toggleDirection=(img)->

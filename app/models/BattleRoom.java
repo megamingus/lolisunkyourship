@@ -48,6 +48,9 @@ public class BattleRoom extends UntypedActor {
                    if(event.has("text")){
                       defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("text").asText()));
                    }
+                   if(event.has("resetPosition")){
+                       System.out.println("Resetear posiciones del barco "+event.get("resetPosition").asText()+" o crearlo si no existe");
+                   }
                    if(event.has("ship")){
                        System.out.println("Posicionar un barco "+event.get("ship").asText()+" en tile "+event.get("tile").asText());
                    }

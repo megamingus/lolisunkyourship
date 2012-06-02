@@ -40,6 +40,7 @@ jQuery(function($){
          });
       })
 ###
+selectedShip=exports ? this
 
 @populateShipYard= ->
   $('#shipyard').append(createDiv({
@@ -47,6 +48,7 @@ jQuery(function($){
   draggable: true
   class: "draggableShip"
   tiles: ship[1]
+  shipType:ship[0]
   #ondragstart:->dragIt("#{ship}{i}",event)
   #onclick:-> toggleDirection(this)
   horizontal: true
@@ -61,18 +63,21 @@ jQuery(function($){
     dd.limit.bottom = dd.limit.top + $div.outerHeight() - $( this ).outerHeight();
     dd.limit.right = dd.limit.left + $div.outerWidth() - $( this ).outerWidth();
   ).drag(( ev, dd )->
+    selectedShip=$(this)
     $(this).css({
       position: 'absolute'
-      top: dd.offsetY
-      left: dd.offsetX
-      top: Math.min( dd.limit.bottom, Math.max( dd.limit.top, dd.offsetY ) )
-      left: Math.min( dd.limit.right, Math.max( dd.limit.left, dd.offsetX ) )
+      top: Math.round( dd.offsetY / 32 ) * 32
+      left: Math.round( dd.offsetX / 32 ) * 32
+      #top: dd.offsetY
+      #left: dd.offsetX
+      #top: Math.min( dd.limit.bottom, Math.max( dd.limit.top, dd.offsetY ) )
+      #left: Math.min( dd.limit.right, Math.max( dd.limit.left, dd.offsetX ) )
     })
     $.drop({ multi: $(this).attr('tiles') });
   )
   $(".My_tile").drop(( ev, dd )->
     $(this).css({background:'green'})
-    console.log $(this).attr('id').substr(9,2)
+    console.log "#{selectedShip.attr('shipType')} is  on #{$(this).attr('id').substr(9,2)}"
   )
   $.drop({ multi: 20 });
 

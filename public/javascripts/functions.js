@@ -50,7 +50,7 @@ $(document).ready(function() {
           html2+="<span class='My_tile'>"+letters[i]+"</span>"
         for (var j = 1; j <11; j++) {
             html+="<span class='tile' id="+letters[i]+j+" onclick='attack(\""+letters[i]+j+"\")'></span>"
-             html2+="<span class='My_tile' id=My_board_"+letters[i]+j+"></span>"
+             html2+="<span class='My_tile' ondrop='dropIt(event)' ondragover='event.preventDefault()' id=My_board_"+letters[i]+j+"></span>"
         }
         html+="</div>"
           html2+="</div>"
@@ -69,6 +69,31 @@ function attack(tile){
     conn.ws({send:{attack: tile}})
 }
 
+//function called when drag starts
+function dragIt(theEvent) {
+//tell the browser what to drag
+
+theEvent.dataTransfer.setData("Text", theEvent.target.id);
+   console.log("the id is:"+"lalala"+theEvent.target.id);
+}
+
+//function called when element drops
+
+function dropIt(theEvent) {
+//get a reference to the element being dragged
+var theData = theEvent.dataTransfer.getData("Text");
+console.log("the id is:"+theData);
+//get the element
+var theDraggedElement = document.getElementById(theData);
+
+
+//add it to the drop element
+theEvent.target.appendChild(theDraggedElement);
+ conn.ws({send:{attack: tile}})
+
+//instruct the browser to allow the drop
+theEvent.preventDefault();
+}
 
 /*
 function connect(username,WsURL) {

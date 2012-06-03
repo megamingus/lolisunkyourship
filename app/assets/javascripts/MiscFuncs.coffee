@@ -1,5 +1,5 @@
-ships=[["aircraftCarrier",5], ["battleship",4],["destroyer",4]
-  ["patrolShip",2],["submarine",3]]
+ships=[["aircraftCarrier",5,"Aircraft carrier"], ["battleship",4,"Battleship"],["destroyer",3,"Destroyer"]
+  ["patrolShip",2,"Patrol boat"],["submarine",3,"Submarine"]]
 
 createDiv = (jsonObj) ->
   $('<div/>', jsonObj)
@@ -7,27 +7,31 @@ createDiv = (jsonObj) ->
 selectedShip=exports ? this
 
 @populateShipYard= ->
-  $('#shipyard').append(createDiv({
+  #$('#shipyard').append(createDiv({
+  $('#shipyard').append($('<img/>',{
+  src:"/assets/images/#{ship[0]}.png"
+  alt:ship[0]
   id:ship[0]+i
   draggable: true
   class: "draggableShip"
   tileLength: ship[1]
-  shipType:ship[0]
+  shipType:ship[2]
   #ondragstart:->dragIt("#{ship}{i}",event)
   #onclick:-> toggleDirection(this)
   horizontal: true
   })) for ship ,i in ships
-  $("""##{ship[0]}#{i}""").append($('<img/>',{
+  ### $("""##{ship[0]}#{i}""").append($('<img/>',{
   src:"/assets/images/#{ship[0]}.png"
   alt:ship[0]
-  })) for ship, i in ships
+  })) for ship, i in ships    ###
   $div = $('#boardContainer');
   $(".draggableShip").click(-> toggleDirection(this)).drag("start",( ev, dd )->
     selectedShip=$(this)
+    console.log $div.offset()
     sendResetPosition(selectedShip.attr('shipType'))
-    dd.limit = $div.offset();
-    dd.limit.bottom = dd.limit.top + $div.outerHeight() - $( this ).outerHeight()+10;
-    dd.limit.right = dd.limit.left + $div.outerWidth() - $( this ).outerWidth()+10;
+    dd.limit = $div.offset()
+    dd.limit.bottom = dd.limit.top + $div.outerHeight() - $( this ).outerHeight()
+    dd.limit.right = dd.limit.left + $div.outerWidth() - $( this ).outerWidth()
   ).drag(( ev, dd )->
     $(this).css({
       position: 'absolute'
@@ -41,7 +45,7 @@ selectedShip=exports ? this
     $.drop({ multi: $(this).attr('tileLength') });
   )
   $(".My_tile").drop(( ev, dd )->
-    #$(this).addClass('ship')
+   # $(this).addClass('ship')
     tileId=$(this).attr('id').substr(9,2)
     console.log "#{selectedShip.attr('shipType')} is  on #{tileId}"
     sendBoatPosition(tileId,selectedShip.attr('shipType'),selectedShip.attr('tileLength'))
@@ -68,7 +72,7 @@ selectedShip=exports ? this
 @toggleDirection=(img)->
   horizontal= isHorizontal(img)
   $(img).attr("horizontal",horizontal)
-  if horizontal then $(img).removeClass("vertical") else $(img).addClass("vertical")
+  #if horizontal then $(img).removeClass("vertical") else $(img).addClass("vertical")
 
 #function called when drag starts
 @dragIt=(drop_target,e)->

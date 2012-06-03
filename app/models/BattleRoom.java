@@ -43,19 +43,22 @@ public class BattleRoom extends UntypedActor {
                public void invoke(JsonNode event) {
                    // Send a UserAction message to the room.
                    if(event.has("attack")){
-                       defaultRoom.tell(new UserAction(username,UserAction.Action.ATTACK, event.get("attack").asText()));
+                       defaultRoom.tell(new UserAction(username,UserAction.Action.ATTACK, event.get("attack").asText(),event));
                    }
                    if(event.has("text")){
-                      defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("text").asText()));
+                      defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("text").asText(),event));
                    }
                    if(event.has("resetPosition")){
-                       System.out.println("Resetear posiciones del barco "+event.get("resetPosition").asText()+" o crearlo si no existe");
+                       defaultRoom.tell(new UserAction(username, UserAction.Action.RESET_SHIP ,event.get("resetPosition").asText(),event));
+                       System.out.println("Resetear posiciones del barco "+event.get("resetPosition").asText()+"");
                    }
                    if(event.has("ship")){
+                       defaultRoom.tell(new UserAction(username, UserAction.Action.POSSITION_SHIP ,event.get("ship").asText(),event));
                        System.out.println("Posicionar un barco "+event.get("ship").asText()+" en tile "+event.get("tile").asText());
                    }
                    if(event.has("ready")){
-                       defaultRoom.tell(new UserAction(username, UserAction.Action.CHAT ,event.get("ready").asText()));
+                       defaultRoom.tell(new UserAction(username, UserAction.Action.READY ,event.get("ready").asText(),event));
+                       System.out.println("ready");
                    }
                }
             });
@@ -118,7 +121,47 @@ public class BattleRoom extends UntypedActor {
         } else if(message instanceof UserAction)  {
             // Received a UserAction message
             UserAction userAction = (UserAction)message;
-            if (userAction.action.equals(UserAction.Action.ATTACK)) {
+            switch (userAction.action){
+                case ATTACK:{
+                    if(members.size()==2){
+                        if(members.get(userAction.username).myTurn){
+                            communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
+                            for(Player user:members.values()){
+                                user.changeTurn();
+                            }
+                        }else{
+                            notifyPlayer("error",userAction.username,"Commander","We are still preparing the torpedos, my Captain.",Json.toJson(""));
+                        }
+                    } else{
+                        notifyPlayer("error",userAction.username,"Commander","Sir, no foes are shown on the radars.",Json.toJson(""));
+                    }
+                }   break;
+                case READY:{
+                    notifyPlayer("strategy",userAction.username,"Commander","The fleet is positioned",Json.toJson(members.get(userAction.username).getShipPositions()));
+                    if(members.get(userAction.username).isReady()){
+                        //ready
+                        System.out.println("player ready ");
+                    } else{
+                        // algo fallo
+                        System.out.println("algo fallo");
+                    }
+                } break;
+                case RESET_SHIP:{
+                     if(!members.get(userAction.username).isReady2Play()){
+                         members.get(userAction.username).getShipByName(userAction.text).resetPositions();
+                     }
+                } break;
+                case POSSITION_SHIP:{
+                    if(!members.get(userAction.username).isReady2Play()){
+                        members.get(userAction.username).getShipByName(userAction.text).addPosition(userAction.json.get("tile").asText());
+                    }
+
+                } break;
+                default:{
+                    notifyAll("talk", userAction.username, userAction.text);
+                }
+            }
+        /*    if (userAction.action.equals(UserAction.Action.ATTACK)) {
                 if(members.size()==2){
                     if(members.get(userAction.username).myTurn){
                         communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
@@ -136,7 +179,7 @@ public class BattleRoom extends UntypedActor {
             }else{
                 if(userAction.text != null && !userAction.text.trim().equals(""))
                     notifyAll("talk", userAction.username, userAction.text);
-            }
+            }     */
             
         } else if(message instanceof Quit)  {
             
@@ -162,7 +205,9 @@ public class BattleRoom extends UntypedActor {
             case ALREADY_SHOT:notifyResult(player,tile,"Captain, we already shot "+tile,
                        "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
-            case SUNK: notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).getShip(tile).getPositions()))); break;
+            case SUNK: {
+                notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).enemy.getShip(tile).getPositions())));
+            } break;
             case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
             default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
@@ -229,16 +274,18 @@ public class BattleRoom extends UntypedActor {
     
     public static class UserAction {
 
-        public enum Action { CHAT, ATTACK, POSSITION_SHIP,READY, PLAY};
+        public enum Action { CHAT, ATTACK,RESET_SHIP, POSSITION_SHIP,READY, PLAY};
 
         final String username;
         final String text;
         final Action action;
+        final JsonNode json;
         
-        public UserAction(String username,Action action, String text) {
+        public UserAction(String username,Action action, String text,JsonNode json) {
             this.username = username;
             this.action=action;
             this.text = text;
+            this.json=json;
         }
 
         

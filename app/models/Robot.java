@@ -34,7 +34,7 @@ public class Robot {
             Duration.create(30, SECONDS),
             Duration.create(30, SECONDS),
             chatRoom,
-            new BattleRoom.UserAction("Robot", BattleRoom.UserAction.Action.CHAT, "I'm still alive")
+            new BattleRoom.UserAction("Robot", BattleRoom.UserAction.Action.CHAT, "I'm still alive",null)
         );
         
     }

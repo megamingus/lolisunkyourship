@@ -25,6 +25,7 @@ public class Player {
     List<String> previousShots;
     List<String> shipPositions;
     int sunkenShips;
+    boolean ready2Play;
 
     public Player(String username, WebSocket.Out<JsonNode> channel,boolean myTurn) {
         this.username = username;
@@ -33,11 +34,33 @@ public class Player {
         ships = createShips();
         previousShots = new ArrayList<String>();
         sunkenShips = 0;
-        defaultStrategy();
-        createPositionList();
+     //   defaultStrategy();
+     //   createPositionList();
+        ready2Play=false;
 
     }
+    public boolean isReady2Play(){
+        return ready2Play;
+    }
 
+
+    public boolean isReady(){
+        for(Ship s:ships){
+            if(!s.isReady()){
+                return false;
+            }
+        }
+        ready2Play =true;
+        return ready2Play;
+    }
+
+    public Ship getShipByName(String name){
+        for(Ship s:ships){
+            if(s.getName().equalsIgnoreCase(name))
+                return s;
+        }
+        return null;
+    }
 
 
     private List<Ship> createShips() {
@@ -82,7 +105,7 @@ public class Player {
         for(Ship ship:ships){
             if(!ship.getSunk()){
                 for(int j=0;j<ship.getPositions().length;j++){
-                     if(ship.getPositions()[j].equals(tile)){
+                     if(ship.getPositions()[j]!=null && ship.getPositions()[j].equals(tile)){
                         ship.setHits(ship.getHits()+1);
                          System.out.println("hits: "+ship.getHits()+" size:"+ship.getSize());
                          if(ship.getHits()==ship.getSize()){
@@ -162,13 +185,14 @@ public class Player {
        }
 
     public List<String> getShipPositions(){
+        createPositionList();
         return shipPositions;
     }
 
     public Ship getShip(String tile){
         for(Ship ship : ships){
             for (String position : ship.getPositions()){
-                if(position.equals(tile)){
+                if(position!=null && position.equals(tile)){
                     return ship;
                 }
             }

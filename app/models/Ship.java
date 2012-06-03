@@ -19,6 +19,7 @@ public class Ship {
     private String name;
     private boolean sunk;
     private int hits;
+    private int currentSize;
 
     public Ship(int size,String name){
          this.size=size;
@@ -26,6 +27,19 @@ public class Ship {
          positions = new String[size];
         hits = 0;
         sunk=false;
+        currentSize=0;
+    }
+    public void resetPositions(){
+        positions=  new String[size];
+    }
+    public boolean isReady(){
+       return size==currentSize&&currentSize==positions.length;
+    }
+    public void addPosition(String tile){
+        //TODO verificar que efectivamente sea una tile que corresponda
+        if(currentSize<size){
+            positions[currentSize++]=tile;
+        }
     }
 
     public String[] getPositions() {

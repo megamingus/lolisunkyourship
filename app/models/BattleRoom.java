@@ -153,6 +153,7 @@ public class BattleRoom extends UntypedActor {
                 } break;
                 case POSSITION_SHIP:{
                     if(!members.get(userAction.username).isReady2Play()){
+                        //todo modificar el metodo addPosition (o cambiarlo) para que le llegue 1 tile y una orientacion  y sabiendo cada bote cuandto deberia medir genere las posiciones
                         members.get(userAction.username).getShipByName(userAction.text).addPosition(userAction.json.get("tile").asText());
                     }
 

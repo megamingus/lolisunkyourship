@@ -25,7 +25,11 @@ selectedShip=exports ? this
   #makeDraggable(drag,->dragIt) for drag in $(".draggableShip")
   makeDroppable(drop,dropIt) for drop in $(".My_tile")
 
-@
+@drawBoat=()->
+  ###
+  deberia decrles a los tiles consiguientes que dibujen los demas pedazons del barquito ,
+  se puede hacer poniendo la imagen como fondo y corriendola como sprite 32px ( o 30 no estoy seguro)
+  ###
 
 @toggleDirection=(img)->
   horizontal= isHorizontal(img)
@@ -33,10 +37,12 @@ selectedShip=exports ? this
   if horizontal then $(img).removeClass("vertical") else $(img).addClass("vertical")
   sendResetPosition($(img).attr('shipType'))
   tile=document.getElementById($(img).attr("id")).parentNode
-  log tile
   if tile?
     tileId=$(tile).attr("id").substr(9,2)
-    sendBoatPosition(tileId,$(img).attr('shipType'),$(img).attr('horizontal'),$(img).attr('tileLength'))
+    if tileId.length==2
+     sendBoatPosition(tileId,$(img).attr('shipType'),$(img).attr('horizontal'),$(img).attr('tileLength'))
+     #ese ==2 es horrible, pero fue....
+  drawBoat()
 
 
 @dropIt = (event) ->
@@ -48,6 +54,7 @@ selectedShip=exports ? this
   $(event.target).addClass('ship')
   tileId=$(event.target).attr('id').substr(9,2)
   sendBoatPosition(tileId,$(element).attr('shipType'),$(element).attr('horizontal'),$(element).attr('tileLength'))
+  drawBoat()
 
 @dragIt=(div,event)->
   selectedShip=$(div)

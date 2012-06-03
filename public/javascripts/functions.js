@@ -49,7 +49,8 @@ $(document).ready(function() {
          // html2+="<span class='My_tile'>"+letters[i]+"</span>"
         for (var j = 1; j <11; j++) {
             html+="<span class='tile' id="+letters[i]+j+" onclick='attack(\""+letters[i]+j+"\")'></span>"
-             html2+="<span class='My_tile' ondrop='dropIt(event)' ondragover='event.preventDefault()' id=My_board_"+letters[i]+j+"></span>"
+            //html2+="<span class='My_tile' ondrop='dropIt(event)' ondragover='event.preventDefault()' id=My_board_"+letters[i]+j+"></span>"
+            html2+="<span class='My_tile' id=My_board_"+letters[i]+j+"></span>"
         }
         html+="</div>"
           html2+="</div>"

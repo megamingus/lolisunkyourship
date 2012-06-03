@@ -193,9 +193,14 @@ background:rgb(255,0,0);
     cursor: move;
 }
 .vertical{
-    /* for firefox, safari, chrome, etc. */
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    /* for ie */
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    transform: rotate(90deg);
+    transform-origin:15% 50%;/* o 10% 60% */
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -ms-transform-origin:15% 50%;/* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari and Chrome */
+    -webkit-transform-origin:15% 50%; /* Safari and Chrome */
+    -moz-transform: rotate(90deg); /* Firefox */
+    -moz-transform-origin: 15% 50%; /* Firefox */
+    -o-transform: rotate(90deg); /* Opera */
+    -o-transform-origin: 15% 50%; /* Opera */
 }

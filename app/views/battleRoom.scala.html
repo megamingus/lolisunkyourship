@@ -53,7 +53,7 @@
                     document.getElementById("board").style.display ="block";
                     document.getElementById("main").style.display ="block";
                     document.getElementById("shipyard").style.display ="none";
-             readyToPlay()
+            readyToPlay()
 
         }
 
@@ -90,14 +90,36 @@
 
               var json=JSON.parse(data.data)
 
+      console.log(json);
+      //+++++++++++++++++++++++++++++Strategy++++++++++++++++++++++++++++++++++++++//
+        if(json.type=='strategy'){
+      for(x=0;x < json.shipPositions.length;x++){
 
-      for(x=0;x < json.length;x++){
-                 $('#My_board_'+json[x]).addClass('ship');
+        if(json.orientation=="true"){
+        $('#My_board_'+json.shipPositions[x]).addClass(json.shipName);
+
+        div ='My_board_'+json.shipPositions[x];
+
+        document.getElementById(div).style.backgroundPosition = -32*x+'px 0px';
+         }else{
+
+        $('#My_board_'+json.shipPositions[x]).addClass(json.shipName+'Vertical');
+
+        div ='My_board_'+json.shipPositions[x];
+        document.getElementById(div).style.backgroundPosition = '0px'+' '+-32*x+"px";
+
         }
+        }
+        }
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        //++++++++++++++++++++++++++++++++++++attack++++++++++++++++++++++++++++++++++++++++++++++//
+
+
         if(json.board == "@username"){
                    if(json.state == 'sunk'){
 
         for(positions in json.shipPositions){
+        $('#My_board_'+json.tile).removeClass('hit');
         $('#My_board_'+json.shipPositions[positions]).addClass(json.state);
 
          }

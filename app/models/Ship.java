@@ -20,6 +20,7 @@ public class Ship {
     private boolean sunk;
     private int hits;
     private int currentSize;
+    private String header;
 
     public Ship(int size,String name){
          this.size=size;
@@ -47,6 +48,7 @@ public class Ship {
         //TODO verificar que efectivamente sea una tile que corresponda
         if(currentSize<size){
             positions[currentSize++]=tile;
+            header=tile;
           String[] tiles =  tile.split("|");
 
             if(orientation.equals("true")){

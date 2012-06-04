@@ -56,8 +56,19 @@ public class Ship {
                       System.out.println(number);
                   }
             } else{
-                String[] letters={"A","B","C","D","E","F","G","H"};
+                String[] letters={"A","B","C","D","E","F","G","H","I","J"};
                 int letraInicial=0;
+                String completeNumber;
+
+                if(tiles.length==4){
+
+                      completeNumber=tiles[2]+tiles[3];
+
+                }else{
+                    completeNumber=tiles[2];
+
+                }
+
                 for(int k=0;k<letters.length;k++){
                     if  (letters[k].equals(tiles[1])){
                                 letraInicial=k;
@@ -67,16 +78,11 @@ public class Ship {
 
                 for(int i=currentSize;i<size;i++){
                     int number = Integer.parseInt(tiles[2])+i;
-                    positions[currentSize++]=letters[letraInicial+i]+tiles[2];
+                    positions[currentSize++]=letters[letraInicial+i]+completeNumber;
                     System.out.println(number);
                 }
             }
 
-
-            System.out.println("el tile es"+tile);
-            System.out.println("el tile es "+tiles[1]);
-            System.out.println("el tile es "+tiles[2]);
-            System.out.println(orientation);
         }
     }
 

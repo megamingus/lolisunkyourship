@@ -153,9 +153,8 @@ public class BattleRoom extends UntypedActor {
                 } break;
                 case POSSITION_SHIP:{
                     if(!members.get(userAction.username).isReady2Play()){
-                        //todo modificar el metodo addPosition (o cambiarlo) para que le llegue 1 tile y una orientacion  y sabiendo cada bote cuandto deberia medir genere las posiciones
-                        members.get(userAction.username).getShipByName(userAction.text).addPosition(userAction.json.get("tile").asText(),userAction.json.get("horizontal").asText());
-                        notifyPlayer("strategy",userAction.username,"Commander","The fleet is positioned",Json.toJson(members.get(userAction.username).getShipPositions()));
+                        members.get(userAction.username).addPositionsToShip(userAction.text,userAction.json.get("tile").asText(),userAction.json.get("horizontal").asText());
+                        notifyPlayer("strategy",userAction.username,"Commander","The "+userAction.text+" is positioned",Json.toJson(new ShipPosition(userAction.text, members.get(userAction.username).getShipByName(userAction.text).getPositions(),userAction.json.get("horizontal").asText())));
                     }
 
                 } break;
@@ -307,6 +306,18 @@ public class BattleRoom extends UntypedActor {
 
 
         }
+
+    public static class ShipPosition{
+        public String shipName;
+        public String[] shipPositions;
+        public String orientation;
+
+        public ShipPosition(String shipName,String[] shipPositions,String orientation){
+            this.shipName=shipName;
+            this.shipPositions=shipPositions;
+            this.orientation=orientation;
+        }
+    }
 
     public static class SunkMsg {
             public String tile;

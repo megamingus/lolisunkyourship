@@ -23,7 +23,7 @@ public class Player {
     Player enemy=null;
     List<Ship> ships;
     List<String> previousShots;
-    List<String> shipPositions;
+    List<String> shipsPositions;
     int sunkenShips;
     boolean ready2Play;
 
@@ -33,9 +33,10 @@ public class Player {
         this.myTurn  =myTurn;
         ships = createShips();
         previousShots = new ArrayList<String>();
+        shipsPositions = new ArrayList<String>();
         sunkenShips = 0;
      //   defaultStrategy();
-     //   createPositionList();
+
         ready2Play=false;
 
     }
@@ -129,9 +130,9 @@ public class Player {
     }
 
    /*La lista tiene que tener los arrays en orden, del barco mas chico al barco mas grande*/
-   public void addShipPositions(List<String[]> shipPositions){
-       for(int i=0; i<shipPositions.size();i++){
-            ships.get(i).setPositions(shipPositions.get(i));
+   public void addShipPositions(List<String[]> shipsPositions){
+       for(int i=0; i<shipsPositions.size();i++){
+            ships.get(i).setPositions(shipsPositions.get(i));
         }
 
    }
@@ -176,17 +177,19 @@ public class Player {
 
 
     private void createPositionList() {
-        shipPositions=new ArrayList<String>();
+        shipsPositions =new ArrayList<String>();
         for(Ship ship : ships){
             for(String position : ship.getPositions()){
-                shipPositions.add(position);
+                shipsPositions.add(position);
             }
         }
        }
 
     public List<String> getShipPositions(){
-        createPositionList();
-        return shipPositions;
+        //createPositionList();
+        System.out.println(shipsPositions);
+
+        return shipsPositions;
     }
 
     public Ship getShip(String tile){
@@ -199,5 +202,76 @@ public class Player {
         }
         return null;
     }
+
+    public void addPositionsToShip(String shipName,String tile,String orientation){
+
+        Ship ship = getShipByName(shipName);
+
+                    String letter = tile.substring(0,1);
+                    int number = Integer.parseInt(tile.substring(1));
+                    ship.setHeader(tile);
+                    if(orientation.equals("true")){
+                       if((number+ship.getSize()-1)<=10){
+                           for(int i=ship.getCurrentSize();i<ship.getSize();i++){
+                              ship.getPositions()[ship.getCurrentSize()]=letter+number;
+                              System.out.println(ship.getPositions()[ship.getCurrentSize()]);
+                              ship.setCurrentSize(ship.getCurrentSize()+1);
+                              number++;
+                          }
+                       }
+
+                    } else{
+                        String[] letters={"A","B","C","D","E","F","G","H","I","J"};
+                        int letterIndex=0;
+                        for(int j=0;j<letters.length;j++){
+                            if(letters[j].equalsIgnoreCase(letter)){
+                                 letterIndex=j;
+                                break;
+                            }
+
+                        }
+                        System.out.println(letters[letterIndex]);
+                        if((letterIndex+ship.getSize())<=10){
+                            for(int k=ship.getCurrentSize();k<ship.getSize();k++){
+                                 ship.getPositions()[ship.getCurrentSize()]=letters[letterIndex]+number;
+                                 System.out.println(ship.getPositions()[ship.getCurrentSize()]);
+                                 ship.setCurrentSize(ship.getCurrentSize()+1);
+                                 letterIndex++;
+
+                            }
+                        }
+
+                    }
+
+                    if(shipIsOverlayed(ship.getPositions())){
+                        ship.resetPositions();
+                    }else{
+                        for(String pos : ship.getPositions()){
+                            shipsPositions.add(pos);
+
+                        }
+                    }
+                    System.out.println(orientation);
+                    //refreshShip(shipName,ship);
+
+                }
+
+        //por ahi no haga falta..
+        public void refreshShip(String name,Ship newShip){
+             for(Ship ship : ships){
+                 if(ship.getName().equalsIgnoreCase(name)){
+                     ship = newShip;
+                 }
+             }
+        }
+
+        public boolean  shipIsOverlayed(String[] draftPositions){
+              for(String position : draftPositions){
+                  if(shipsPositions.contains(position)){
+                      return true;
+                  }
+              }
+            return false;
+        }
 
 }

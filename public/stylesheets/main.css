@@ -148,22 +148,99 @@ body {
     margin: 0 40px;
 }
 .miss{
-    background: #D9E7FB;
+     background-color: #D9E7FB;
 }
 
 .hit{
-    background: rgb(255,255,0);
+     background-color: rgb(255,255,0);
 }
 
 .win{
-      background: #f55;
+     background-color: #f55;
    }
 
 .ship{
+    background-image:url('/assets/images/aircraftCarrier.png');
 
-    background: rgb(0,255,0);
+    background-repeat:no-repeat;
 
 }
+
+.aircraftCarrier{
+    background-image:url('/assets/images/aircraftCarrier.png');
+
+    background-repeat:no-repeat;
+
+}
+
+
+.battleship{
+    background-image:url('/assets/images/battleship.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.destroyer{
+    background-image:url('/assets/images/destroyer.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.patrolShip{
+    background-image:url('/assets/images/patrolShip.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.submarine{
+    background-image:url('/assets/images/submarine.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.aircraftCarrierVertical{
+    background-image:url('/assets/images/aircraftCarrierVertical.png');
+
+    background-repeat:no-repeat;
+
+}
+
+
+.battleshipVertical{
+    background-image:url('/assets/images/battleshipVertical.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.destroyerVertical{
+    background-image:url('/assets/images/destroyerVertical.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.patrolShipVertical{
+    background-image:url('/assets/images/patrolShipVertical.png');
+
+    background-repeat:no-repeat;
+
+}
+
+.submarineVertical{
+    background-image:url('/assets/images/submarineVertical.png');
+
+    background-repeat:no-repeat;
+
+}
+
+
+
+
 
 .sunk{
 background:rgb(255,0,0);

@@ -154,7 +154,8 @@ public class BattleRoom extends UntypedActor {
                 case POSSITION_SHIP:{
                     if(!members.get(userAction.username).isReady2Play()){
                         //todo modificar el metodo addPosition (o cambiarlo) para que le llegue 1 tile y una orientacion  y sabiendo cada bote cuandto deberia medir genere las posiciones
-                        members.get(userAction.username).getShipByName(userAction.text).addPosition(userAction.json.get("tile").asText());
+                        members.get(userAction.username).getShipByName(userAction.text).addPosition(userAction.json.get("tile").asText(),userAction.json.get("horizontal").asText());
+                        notifyPlayer("strategy",userAction.username,"Commander","The fleet is positioned",Json.toJson(members.get(userAction.username).getShipPositions()));
                     }
 
                 } break;

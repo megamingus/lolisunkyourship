@@ -154,7 +154,7 @@ public class BattleRoom extends UntypedActor {
                 case POSSITION_SHIP:{
                     if(!members.get(userAction.username).isReady2Play()){
                         members.get(userAction.username).addPositionsToShip(userAction.text,userAction.json.get("tile").asText(),userAction.json.get("horizontal").asText());
-                        notifyPlayer("strategy",userAction.username,"Commander","The "+userAction.text+" is positioned",Json.toJson(new ShipPosition(userAction.text, members.get(userAction.username).getShipByName(userAction.text).getPositions(),userAction.json.get("horizontal").asText())));
+                        notifyPlayer("strategy",userAction.username,"Commander","The "+userAction.text+" is positioned",Json.toJson(new ShipPosition(userAction.json.get("alt").asText(), members.get(userAction.username).getShipByName(userAction.text).getPositions(),userAction.json.get("horizontal").asText())));
                     }
 
                 } break;
@@ -311,11 +311,13 @@ public class BattleRoom extends UntypedActor {
         public String shipName;
         public String[] shipPositions;
         public String orientation;
+        public String type;
 
         public ShipPosition(String shipName,String[] shipPositions,String orientation){
             this.shipName=shipName;
             this.shipPositions=shipPositions;
             this.orientation=orientation;
+            this.type="strategy";
         }
     }
 

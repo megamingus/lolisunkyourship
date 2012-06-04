@@ -42,6 +42,44 @@ public class Ship {
         }
     }
 
+
+    public void addPosition(String tile,String orientation){
+        //TODO verificar que efectivamente sea una tile que corresponda
+        if(currentSize<size){
+            positions[currentSize++]=tile;
+          String[] tiles =  tile.split("|");
+
+            if(orientation.equals("true")){
+               for(int i=currentSize;i<size;i++){
+                      int number = Integer.parseInt(tiles[2])+i;
+                      positions[currentSize++]=tiles[1]+Integer.toString(number);
+                      System.out.println(number);
+                  }
+            } else{
+                String[] letters={"A","B","C","D","E","F","G","H"};
+                int letraInicial=0;
+                for(int k=0;k<letters.length;k++){
+                    if  (letters[k].equals(tiles[1])){
+                                letraInicial=k;
+                    }
+                }
+
+
+                for(int i=currentSize;i<size;i++){
+                    int number = Integer.parseInt(tiles[2])+i;
+                    positions[currentSize++]=letters[letraInicial+i]+tiles[2];
+                    System.out.println(number);
+                }
+            }
+
+
+            System.out.println("el tile es"+tile);
+            System.out.println("el tile es "+tiles[1]);
+            System.out.println("el tile es "+tiles[2]);
+            System.out.println(orientation);
+        }
+    }
+
     public String[] getPositions() {
          return positions;
      }

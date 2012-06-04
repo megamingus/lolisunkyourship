@@ -40,7 +40,7 @@ selectedShip=exports ? this
   if tile?
     tileId=$(tile).attr("id").substr(9,2)
     if tileId.length==2
-     sendBoatPosition(tileId,$(img).attr('shipType'),$(img).attr('horizontal'),$(img).attr('tileLength'))
+     sendBoatPosition(tileId,$(img).attr('shipType'),$(img).attr('horizontal'),$(img).attr('tileLength'),$(img).attr('alt'))
      #ese ==2 es horrible, pero fue....
   drawBoat()
 
@@ -51,9 +51,9 @@ selectedShip=exports ? this
   id = event.dataTransfer.getData("text/html")
   element = document.getElementById(id)
   event.target.appendChild(element);
-  $(event.target).addClass('ship')
+  #$(event.target).addClass('ship')
   tileId=$(event.target).attr('id').substr(9)
-  sendBoatPosition(tileId,$(element).attr('shipType'),$(element).attr('horizontal'),$(element).attr('tileLength'))
+  sendBoatPosition(tileId,$(element).attr('shipType'),$(element).attr('horizontal'),$(element).attr('tileLength'),$(element).attr('alt'))
   drawBoat()
 
 @dragIt=(div,event)->
@@ -82,8 +82,9 @@ cancel=(event)->
   if (event.preventDefault) then event.preventDefault()
   return false;
 
-@sendBoatPosition=(tile,ship,horizontal,length)->
+@sendBoatPosition=(tile,ship,horizontal,length,alt)->
   conn.ws({send:{
+    alt: alt
     ship: ship
     length:length
     horizontal: horizontal
@@ -95,7 +96,7 @@ cancel=(event)->
   }})
 
 @readyToPlay=->
-  $(".draggableShip").click(->).drag(->)
+  $(".draggableShip").hide()
   conn.ws({send:{
   ready: "ready"
   }})

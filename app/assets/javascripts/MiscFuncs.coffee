@@ -52,7 +52,7 @@ selectedShip=exports ? this
   element = document.getElementById(id)
   event.target.appendChild(element);
   $(event.target).addClass('ship')
-  tileId=$(event.target).attr('id').substr(9,2)
+  tileId=$(event.target).attr('id').substr(9)
   sendBoatPosition(tileId,$(element).attr('shipType'),$(element).attr('horizontal'),$(element).attr('tileLength'))
   drawBoat()
 

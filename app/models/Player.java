@@ -26,6 +26,7 @@ public class Player {
     List<String> shipsPositions;
     int sunkenShips;
     boolean ready2Play;
+    boolean autoplayOn;
 
     public Player(String username, WebSocket.Out<JsonNode> channel,boolean myTurn) {
         this.username = username;
@@ -35,6 +36,7 @@ public class Player {
         previousShots = new ArrayList<String>();
         shipsPositions = new ArrayList<String>();
         sunkenShips = 0;
+        autoplayOn=false;
      //   defaultStrategy();
 
         ready2Play=false;
@@ -274,4 +276,17 @@ public class Player {
             return false;
         }
 
+
+    public boolean isAutoplayOn() {
+          return autoplayOn;
+      }
+
+      public void setAutoplayOn(String autoplayOn) {
+          if(autoplayOn.equalsIgnoreCase("true")){
+              this.autoplayOn = true;
+          } else{
+              this.autoplayOn=false;
+          }
+
+      }
 }

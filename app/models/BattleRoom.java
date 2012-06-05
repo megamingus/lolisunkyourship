@@ -125,9 +125,14 @@ public class BattleRoom extends UntypedActor {
                 case ATTACK:{
                     if(members.size()==2){
                         if(members.get(userAction.username).myTurn){
+
                             communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
                             for(Player user:members.values()){
                                 user.changeTurn();
+                            }
+                            //CHECK AUTOPLAY
+                            if(members.get(userAction.username).enemy.isAutoplayOn()){
+                                notifyPlayer("autoplay",members.get(userAction.username).enemy.username,"Commander","",Json.toJson(""));
                             }
                         }else{
                             notifyPlayer("error",userAction.username,"Commander","We are still preparing the torpedos, my Captain.",Json.toJson(""));
@@ -158,6 +163,9 @@ public class BattleRoom extends UntypedActor {
                     }
 
                 } break;
+                case AUTOPLAY:{
+                      members.get(userAction.username).setAutoplayOn(userAction.text);
+                               } break;
                 default:{
                     notifyAll("talk", userAction.username, userAction.text);
                 }
@@ -207,7 +215,7 @@ public class BattleRoom extends UntypedActor {
                        "The grogged monkeys shot the same spot again!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case HIT: notifyResult(player,tile,"Bull's eye Captain!","Arrrgh! We got hit!",Json.toJson(new msg(tile,"hit",members.get(player).enemy.username))); break;
             case SUNK: {
-                notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).enemy.getShip(tile).getPositions())));
+                notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).enemy.getShip(tile).getPositions(),members.get(player).enemy.getShip(tile).getName())));
             } break;
             case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
             case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
@@ -275,7 +283,7 @@ public class BattleRoom extends UntypedActor {
     
     public static class UserAction {
 
-        public enum Action { CHAT, ATTACK,RESET_SHIP, POSSITION_SHIP,READY, PLAY};
+        public enum Action { CHAT, ATTACK,RESET_SHIP, POSSITION_SHIP,READY, PLAY,AUTOPLAY};
 
         final String username;
         final String text;
@@ -325,14 +333,14 @@ public class BattleRoom extends UntypedActor {
             public String tile;
            public String state;
            public  String board;
-              //String text;
             public String[] shipPositions;
+             public String shipName;
 
-                public SunkMsg(String tile,String state,String board,String[] shipPositions) {
+                public SunkMsg(String tile,String state,String board,String[] shipPositions,String shipName) {
                     this.tile = tile;
                     this.state=state;
                     this.board=board;
-                //    this.text = text;
+                    this.shipName=shipName;
                     this.shipPositions=shipPositions;
                 }
 

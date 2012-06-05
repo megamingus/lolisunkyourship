@@ -238,6 +238,7 @@ a:hover {
   text-decoration: underline;
 }
 .pull-right {
+
   float: right;
 }
 .pull-left {
@@ -264,7 +265,7 @@ a:hover {
 .row > [class*="span"] {
   display: inline;
   float: left;
-  margin-left: 20px;
+/*  margin-left: 20px; */
 }
 .span1 {
   width: 40px;

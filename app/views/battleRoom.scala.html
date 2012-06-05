@@ -16,7 +16,7 @@
             <strong>Oops!</strong> <span></span>
         </p>
     </div>
-    <div id="onChat" class="row" >
+    <div id="onChat" class="row onChat" >
         <div class="span10" id="My_board">
         </div>
         <div class="span10" id="board" style="display: none;">
@@ -36,7 +36,10 @@
                 <img id="ship4" src="@routes.Assets.at("images/Ship.png")">
             </div>
             </div>  -->
-            <input class="btn" onclick="ready()">
+
+        </div>
+        <div id="buttom">
+            <input class="btn" onclick="ready()" value="Ready to play!">
         </div>
 
         <div class="span4" id="main" style="display: none;">
@@ -44,7 +47,7 @@
             </div>
             <textarea id="talk"></textarea>
         </div>
-        <div><input type="checkbox" id="autoplay" value="Autoplay" onClick=setAutoplay() /></div>
+        <div><input type="checkbox" id="autoplay" value="Autoplay" onClick=setAutoplay() style="display: none;"/></div>
     </div>
     
     <script type="text/javascript" charset="utf-8">
@@ -58,6 +61,10 @@
                     document.getElementById("board").style.display ="block";
                     document.getElementById("main").style.display ="block";
                     document.getElementById("shipyard").style.display ="none";
+                    document.getElementById("buttom").style.display ="none";
+                    $("#onChat").removeClass('onChat');
+
+
             readyToPlay()
 
 
@@ -156,7 +163,7 @@
          }
         } else{
 
-        $('#My_board_'+json.tile).removeClass('ship');
+
         $('#My_board_'+json.tile).addClass(json.state);
 
          }
@@ -180,6 +187,7 @@
             bot.update(letterIndex+1,json.tile.substring(1),json.shipName);
 
        for(positions in json.shipPositions){
+        $('#My_board_'+json.tile).removeClass('hit');
         $('#'+json.shipPositions[positions]).addClass(json.state);
 
         }

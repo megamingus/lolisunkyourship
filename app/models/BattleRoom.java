@@ -91,7 +91,7 @@ public class BattleRoom extends UntypedActor {
     Map<String, Player> members = new HashMap<String,Player>();// WebSocket.Out<JsonNode>>();
     
     public void onReceive(Object message) throws Exception {
-        
+        System.out.println("New Message "+ message.toString());
         if(message instanceof Join) {
             
             // Received a Join message
@@ -164,6 +164,7 @@ public class BattleRoom extends UntypedActor {
 
                 } break;
                 case AUTOPLAY:{
+                    System.out.println("Hohoho");
                       members.get(userAction.username).setAutoplayOn(userAction.text);
                                } break;
                 default:{

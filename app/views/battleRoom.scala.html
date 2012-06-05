@@ -49,14 +49,22 @@
         </div>
         <div><input type="checkbox" id="autoplay" value="Autoplay" onClick=setAutoplay() style="display: none;"/></div>
     </div>
-    
+
+<div id='blackback'></div>
+<div id='popup'>
+
+</div>
     <script type="text/javascript" charset="utf-8">
 
       conn=new WsConnection("@routes.Application.battle(key,username).webSocketURL(request)",chatRecieve)
 
+        function toggle(){
+        toggleVisibility('popup');
+        toggleVisibility('blackback');
+        }
 
 
-         function ready(){
+        function ready(){
                     bot = new BattleshipBot();
                     document.getElementById("board").style.display ="block";
                     document.getElementById("main").style.display ="block";
@@ -72,11 +80,13 @@
 
     function setAutoplay(){
         if(document.getElementById("autoplay").checked==1){
-            conn.ws({send:{autoplay: true}})
+          /*  conn.ws({send:{autoplay: true}})
             console.log("Its true!");
         }else{
-            conn.ws({send:{autoplay: false}})
+            conn.ws({send:{autoplay: false}})  */
         }
+
+
     }
 
       function chatRecieve(event) {

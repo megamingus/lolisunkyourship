@@ -298,3 +298,13 @@ background:rgb(255,0,0);
     -o-transform: rotate(90deg); /* Opera */
     -o-transform-origin: 15% 50%; /* Opera */
 }
+
+#blackback{
+       position:fixed;
+       width:100%;
+       height:100%;
+       background:black;
+       display:none;
+       z-index:1;
+       opacity:0.8;
+}

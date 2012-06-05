@@ -22,7 +22,7 @@
         size = 10;
       }
       this.size = size;
-      this.commands = ["miss", "carrier", "battleship", "submarine", "destroyer", "patrol", "hit"];
+      this.commands = ["miss", "aircraftcarrier", "battleship", "submarine", "destroyer", "patrolShip", "hit"];
       this.ships = this.commands.slice(1, 6);
       this.left = this.commands.slice(1, 6);
       this.init();

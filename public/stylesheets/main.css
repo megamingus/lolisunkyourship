@@ -1,14 +1,26 @@
 html, body {
     background-color: #eee;
+      background-image:url('/assets/images/Battle_Ship_by_Radojavor.jpg');
 }
 body {
     padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+
 }
 .container > footer p {
     text-align: center; /* center align it with the container */
 }
 .container {
-    width: 820px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+    width: 830px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+}
+
+.containerAfterPositioning {
+    width: 750px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+}
+
+
+.onChat{
+
+     width:730px;
 }
 
 /* The white background content wrapper */
@@ -23,8 +35,8 @@ body {
        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
             box-shadow: 0 1px 2px rgba(0,0,0,.15);
     min-height: 10px;
-}
 
+}
 
 /* Page header tweaks */
 .page-header {
@@ -36,17 +48,17 @@ body {
 /* Styles you shouldn't keep as they are for displaying this base example only */
 .content .span10,
 .content {
-    min-height: 500px;
+    min-height: 350px;
 }
 
 .span4 {
-    min-height: 400px;
+    min-height: 300px;
 }
 
 /* Give a quick and non-cross-browser friendly divider */
 .content .span4 {
     padding-left: 9px;
-    margin-left: 10px;
+   /* margin-left: 10px;*/
     border-left: 1px solid #eee;
 }
 
@@ -145,10 +157,15 @@ body {
 }
 .boardRow{
     clear:both;
-    margin: 0 40px;
+    margin: 0 10px;
 }
 .miss{
-     background-color: #D9E7FB;
+        background-image:url('/assets/images/textura-de-agua_21615.jpg');
+}
+
+#buttom{
+float:right;
+
 }
 
 .hit{

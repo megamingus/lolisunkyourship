@@ -1,6 +1,10 @@
-@ships=[["carrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
+@ships=[["aircraftCarrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
   ["destroyer",3,"Destroyer","destroyer"],
   ["patrolShip",2,"Patrol boat","patrol"],["submarine",3,"Submarine","submarine"]]
+@botConversion =(shipName)->
+  return ship[3]  for ship in ships when ship[2] is shipName
+
+
 
 letters = new Array("A","B","C","D","E","F","G","H","I","J")
 

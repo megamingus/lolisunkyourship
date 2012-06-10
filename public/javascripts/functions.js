@@ -25,7 +25,7 @@ WsConnection.prototype.ws=function(json){
 }
 
 $(document).ready(function() {
-
+    bot = new BattleshipBot();
     var letters = new Array("A","B","C","D","E","F","G","H","I","J");
     //creo la primer fila de numeros
     var html="<div class='boardRow'>"
@@ -71,7 +71,6 @@ function attack(tile){
 }
 
 function ready(){
-    bot = new BattleshipBot();
     document.getElementById("board").style.display ="block";
     document.getElementById("main").style.display ="block";
     document.getElementById("shipyard").style.display ="none";
@@ -138,10 +137,9 @@ function battleRecieve(username,event) {
                 botAttack()
             }
             //si ataque yo
-        }else {
-            var tile=json.tile
-            tile.x=parseInt(tile.substr(1))
-            tile.y=tile.substr(0,1).charCodeAt()-65
+        }else if(json.tile){
+            var tileX=json.tile.substr(0,1).charCodeAt()-65
+            var tileY=parseInt(json.tile.substr(1))-1
             var command=json.state
             if(json.state=='win'){
                 popUp("won");
@@ -160,7 +158,7 @@ function battleRecieve(username,event) {
             }       */
 
             if(json.state == 'sunk'){
-               command=json.shipName;
+               command=botConversion(json.shipName)
                 for(positions in json.shipPositions){
                     $('#My_board_'+json.tile).removeClass('hit');
                     $('#'+json.shipPositions[positions]).addClass(json.state);
@@ -174,8 +172,8 @@ function battleRecieve(username,event) {
                 $('#'+json.tile).addClass(json.state);
 
             }
-            bot.update(tile.x,tile.y,command);
-            console.log("updating bot:"+tile.x,tile.y,command);
+            bot.update(tileX,tileY,command);
+            console.log("updating bot:"+tileX+tileY+" comm: "+command);
         }
     }
 }
@@ -248,6 +246,6 @@ function botAttack(){
         var letters = new Array("A","B","C","D","E","F","G","H","I","J");
         console.log("bot play!");
         var point = bot.suggest();
-        var tile=""+letters[point.x]+point.y.toString()
+        var tile=""+letters[point.x]+(point.y+1).toString()
         attack(tile);
 }

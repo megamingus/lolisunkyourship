@@ -106,7 +106,7 @@
 
              var point = bot.suggest();
              var letterNumber =0;
-             for(var k=0;k<letters.length;k++){
+             for(var k=0; k< letters.length;k++){
                  if(point.x.equals(k)){
                      letterNumber=k;
                      break;
@@ -139,6 +139,8 @@
               var json=JSON.parse(data.data)
 
       console.log(json);
+
+
       //+++++++++++++++++++++++++++++Strategy++++++++++++++++++++++++++++++++++++++//
         if(json.type=='strategy'){
       for(x=0;x < json.shipPositions.length;x++){
@@ -160,6 +162,8 @@
         }
         }
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+
+
         //++++++++++++++++++++++++++++++++++++attack++++++++++++++++++++++++++++++++++++++++++++++//
 
         //si me atacaron

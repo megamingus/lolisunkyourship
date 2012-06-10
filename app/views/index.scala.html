@@ -1,6 +1,7 @@
 
 @main(null) {
-    
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+
     @if(flash.containsKey("error")) {
         
         <div class="alert-message error">
@@ -11,11 +12,20 @@
         
     }
         
-    <div class="alert-message block-message info">
-        <p>
-            <strong>This is WAR!</strong>
-            We all knew it would eventually come to this.
-        </p>
+
+    <div class="logo">
+        <img src="/assets/images/name.png" alt="Logo">
     </div>
+    <div class = "loginContent">
+        <h3> THIS IS WAR!</h3>
+        <p>
+           We all knew it would eventually come to this
+        </p>
+        <form action="@routes.Application.chatRoom()" class="pull-right">
+                <input id="username" name="username" class="input-small" type="text" placeholder="Username">
+                <button class="button blue main" type="submit">Sign in</button>
+        </form>
+    </div>
+
     
 }

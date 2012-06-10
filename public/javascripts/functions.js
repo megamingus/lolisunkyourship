@@ -59,7 +59,7 @@ $(document).ready(function() {
     html2+="</div>"
     $("#board").html(html)
     $("#My_board").html(html2)
-
+    $("#talk").keypress(handleReturnKey)
     populateShipYard()
 })
 
@@ -69,84 +69,185 @@ $(document).ready(function() {
 function attack(tile){
     conn.ws({send:{attack: tile}})
 }
-/*
-//function called when drag starts
-function dragIt(theEvent) {
-//tell the browser what to drag
 
-theEvent.dataTransfer.setData("Text", theEvent.target.id);
-   console.log("the id is:"+"lalala"+theEvent.target.id);
+function ready(){
+    bot = new BattleshipBot();
+    document.getElementById("board").style.display ="block";
+    document.getElementById("main").style.display ="block";
+    document.getElementById("shipyard").style.display ="none";
+    document.getElementById("buttom").style.display ="none";
+    $("#onChat").removeClass('onChat');
+    readyToPlay()
 }
-*/
-
-//function called when element drops
-/*
-function dropIt(theEvent) {
-//get a reference to the element being dragged
-var theData = theEvent.dataTransfer.getData("Text");
-console.log("the id is:"+theData);
-//get the element
-var theDraggedElement = document.getElementById(theData);
+function setAutoplay(){
+    if(document.getElementById("autoplayCheck").checked==1){
+        autoplay=true;
+    }else{
+        autoplay=false;
+    }
 
 
-//add it to the drop element
-theEvent.target.appendChild(theDraggedElement);
- conn.ws({send:{attack: tile}})
-
-//instruct the browser to allow the drop
-theEvent.preventDefault();
 }
-     */
-/*
-function connect(username,WsURL) {
-    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
-    var chatSocket = new WS(WsURL)
 
-    var sendMessage = function() {
-        chatSocket.send(JSON.stringify(
-            {text: $("#talk").val()}
-        ))
-        $("#talk").val('')
+
+
+function battleRecieve(username,event) {
+    var data = JSON.parse(event.data)
+
+    // Handle errors
+    if(data.error) {
+        conn.close()
+        $("#onError span").text(data.error)
+        $("#onError").show()
+        return
+    } else {
+        $("#onChat").show()
     }
 
-    var receiveEvent = function(event) {
-        var data = JSON.parse(event.data)
+    if (data.message){
+        chatMessage(data,username)
+    }
+    //Update the members list
+    $("#members").html('')
+    $(data.members).each(function(){$("#members").append('<li>' + this + '</li>')})
 
-        // Handle errors
-        if(data.error) {
-            chatSocket.close()
-            $("#onError span").text(data.error)
-            $("#onError").show()
-            return
-        } else {
-            $("#onChat").show()
+    if(data.data){
+
+        var json=JSON.parse(data.data)
+
+        console.log(json);
+        //+++++++++++++++++++++++++++++Strategy++++++++++++++++++++++++++++++++++++++//
+        if(json.type=='strategy'){
+            drawStrategy(json)
         }
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        //++++++++++++++++++++++++++++++++++++attack++++++++++++++++++++++++++++++++++++++++++++++//
 
-        // Create the message element
-        var el = $('<div class="message"><span></span><p></p></div>')
-        $("span", el).text(data.user)
-        $("p", el).text(data.message)
-        $(el).addClass(data.kind)
-        if(data.user == username) $(el).addClass('me')
-        $('#messages').append(el)
+        //si me atacaron
+        if(json.board == username){
+            if(json.state == 'sunk'){
+                for(positions in json.shipPositions){
+                    $('#My_board_'+json.tile).removeClass('hit');
+                    $('#My_board_'+json.shipPositions[positions]).addClass(json.state);
 
-        // Update the members list
-        $("#members").html('')
-        $(data.members).each(function() {
-            $("#members").append('<li>' + this + '</li>')
-        })
-    }
+                }
+            }else{
+                $('#My_board_'+json.tile).addClass(json.state);
+            }
+            if(autoplay){
+                botAttack()
+            }
+            //si ataque yo
+        }else {
+            var tile=json.tile
+            tile.x=parseInt(tile.substr(1))
+            tile.y=tile.substr(0,1).charCodeAt()-65
+            var command=json.state
+            if(json.state=='win'){
+                popUp("won");
 
-    var handleReturnKey = function(e) {
-        if(e.charCode == 13 || e.keyCode == 13) {
-            e.preventDefault()
-            sendMessage()
+            }
+           /* console.log("tile: "+json.tile)
+            var letterPos = json.tile;
+            var letritas=letterPos.substr(0,1);
+
+            var letterIndex = 0;
+            for(var j=0;j<letters.length;j++) {
+                if(letters[j]==letritas){
+                    letterIndex=j;
+                }
+                break;
+            }       */
+
+            if(json.state == 'sunk'){
+               command=json.shipName;
+                for(positions in json.shipPositions){
+                    $('#My_board_'+json.tile).removeClass('hit');
+                    $('#'+json.shipPositions[positions]).addClass(json.state);
+
+                }
+
+            }else{
+                //console.log(letterIndex+1+" "+json.tile.substring(1)+" "+json.state)
+               // bot.update(parseInt(json.tile.substring(1)),letterIndex+1,json.state);
+
+                $('#'+json.tile).addClass(json.state);
+
+            }
+            bot.update(tile.x,tile.y,command);
+            console.log("updating bot:"+tile.x,tile.y,command);
         }
     }
-
-    $("#talk").keypress(handleReturnKey)
-
-    chatSocket.onmessage = receiveEvent
+}
 
 
-}*/
+
+
+
+function drawStrategy(json){
+    for(x=0;x < json.shipPositions.length;x++){
+        if(json.orientation=="true"){
+            $('#My_board_'+json.shipPositions[x]).addClass(json.shipName);
+            div ='My_board_'+json.shipPositions[x];
+            document.getElementById(div).style.backgroundPosition = -32*x+'px 0px';
+        }else{
+            $('#My_board_'+json.shipPositions[x]).addClass(json.shipName+'Vertical');
+            div ='My_board_'+json.shipPositions[x];
+            document.getElementById(div).style.backgroundPosition = '0px'+' '+-32*x+"px";
+
+        }
+    }
+}
+
+
+
+
+
+function chatRecieve(username,event) {
+    var data = JSON.parse(event.data)
+
+    // Handle errors
+    if(data.error) {
+        chatSocket.close()
+        $("#onError span").text(data.error)
+        $("#onError").show()
+        return
+    } else {
+        $("#onChat").show()
+    }
+
+    // Create the message element
+    var el = $('<div class="message"><span></span><p></p></div>')
+    $("span", el).text(data.user)
+    $("p", el).text(data.message)
+    $(el).addClass(data.kind)
+    if(data.user == '@username') $(el).addClass('me')
+    $('#chat_messages').append(el)
+    // Update the members list
+    $("#members").html('')
+    $(data.members).each(function() {
+        $("#members").append('<li>' + this + '</li>')
+    })
+    if(data.data){
+        var json=JSON.parse(data.data)
+        if(json.url){window.location.href=json.url}
+
+    }
+}
+function play(){
+    conn.ws({send:{play: "play"}})
+}
+var handleReturnKey = function(e) {
+    if(e.charCode == 13 || e.keyCode == 13) {
+        e.preventDefault()
+        conn.ws({send:{text: $("#talk").val()},beforeSend:function(){$("#talk").val('')}})
+    }
+}
+
+function botAttack(){
+        var letters = new Array("A","B","C","D","E","F","G","H","I","J");
+        console.log("bot play!");
+        var point = bot.suggest();
+        var tile=""+letters[point.x]+point.y.toString()
+        attack(tile);
+}

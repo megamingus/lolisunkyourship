@@ -1,5 +1,6 @@
-ships=[["aircraftCarrier",5,"Aircraft carrier"], ["battleship",4,"Battleship"],["destroyer",3,"Destroyer"]
-  ["patrolShip",2,"Patrol boat"],["submarine",3,"Submarine"]]
+@ships=[["carrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
+  ["destroyer",3,"Destroyer","destroyer"],
+  ["patrolShip",2,"Patrol boat","patrol"],["submarine",3,"Submarine","submarine"]]
 
 letters = new Array("A","B","C","D","E","F","G","H","I","J")
 
@@ -98,7 +99,7 @@ cancel=(event)->
 @readyToPlay=->
   $(".draggableShip").hide()
   conn.ws({send:{
-  ready: "ready"
+    ready: "ready"
   }})
 
 @isHorizontal=(img)->
@@ -106,3 +107,31 @@ cancel=(event)->
 
 log=(msg)->
   console.log msg
+
+
+
+@chatMessage=(data,username)->
+  # Create the message element
+  el = $('<div class="message"><span></span><p></p></div>')
+  $("span", el).text(data.user+":")
+  $("p", el).text(data.message)
+  $(el).addClass(data.kind)
+  if(data.user == username)
+    $(el).addClass('me')
+  $('#messages').append(el)
+
+
+
+
+
+###
+@ready=->
+  bot = new BattleshipBot();
+  $("#board").show()
+  $("#main").show
+  $("#shipyard").hide
+  $("#buttom").hide
+  $("#onChat").removeClass('onChat');
+  alert("ready")
+  readyToPlay()
+   ###

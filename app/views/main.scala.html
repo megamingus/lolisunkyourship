@@ -16,22 +16,19 @@
         
         <div class="topbar">
             <div class="fill">
-                <div class="container">
-                    <a class="brand" href="@routes.Application.index()">Lol, I sunk your ship!</a>
+
                     
                     @if(connected != null) {
-                        <p class="pull-right">
-                            Logged in as @connected —
-                            <a href="@routes.Application.index()">Disconnect</a>
-                        </p>
-                    } else {
-                        <form action="@routes.Application.chatRoom()" class="pull-right">
-                            <input id="username" name="username" class="input-small" type="text" placeholder="Username">
-                            <button class="btn" type="submit">Sign in</button>
-                        </form>
+                         <div class="container">
+                            <a class="brand" href="@routes.Application.index()">Lol, I sunk your ship!</a>
+                            <p class="pull-right">
+                                Logged in as @connected —
+                                <a href="@routes.Application.index()">Disconnect</a>
+                            </p>
+                         </div>
                     }
                     
-                </div>
+
             </div>
         </div>
 

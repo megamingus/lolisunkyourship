@@ -1,0 +1,69 @@
+.container {
+    width: 15%;
+
+}
+
+.content .span10, .content {
+    min-height: 0px;
+    background-color: transparent;
+}
+
+
+.loginContent {
+    float: left;
+    width: 100%;
+    background: url('/assets/images/gray_bg.gif') repeat-y 0 0;
+    text-align: center;
+    padding-top: 45px;
+    -webkit-box-shadow: 0px 1px #717171;
+    box-shadow: 0px 1px #717171;
+    border-radius: 12px 12px 12px 12px;
+}
+
+.loginContent  h3 {
+    margin-top: 2%;
+    font: 36px/36px  Helvetica, Arial, sans-serif;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 2%;
+}
+
+.content  p {
+font: 18px/30px  Helvetica, Arial, sans-serif;
+color: black;
+padding-top: 7px;
+}
+
+.input-small {
+    width: 284px;
+    height: 30px;
+    background: white;
+    font: 16px/14px Helvetica, Arial, sans-serif;
+    color: #777;
+    border: 1px solid #C5C5C5;
+    padding: 0px 12px;
+    text-align: left;
+    margin-top: 8%;
+    margin-left: -68%;
+    height: 30px;
+
+}
+
+.button.blue:hover {
+text-decoration: none;
+    background-image: linear-gradient(top, rgb(24,113,143) 29%, rgb(76,151,168) 65%);
+    background-image: -o-linear-gradient(top, rgb(24,113,143) 29%, rgb(76,151,168) 65%);
+    background-image: -moz-linear-gradient(top, rgb(24,113,143) 29%, rgb(76,151,168) 65%);
+    background-image: -webkit-linear-gradient(top, rgb(24,113,143) 29%, rgb(76,151,168) 65%);
+    background-image: -ms-linear-gradient(top, rgb(24,113,143) 29%, rgb(76,151,168) 65%);
+
+    background-image: -webkit-gradient(
+    	linear,
+    	left top,
+    	left bottom,
+    	color-stop(0.29, rgb(24,113,143)),
+    	color-stop(0.65, rgb(76,151,168))
+    );
+
+}
+

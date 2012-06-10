@@ -152,14 +152,13 @@ body {
     overflow:hidden;
     border-style: solid;
     border-width: 1px;
+    background-image:url('/assets/images/textura-de-agua_21615.jpg');
 }
 .boardRow{
     clear:both;
     margin: 0 10px;
 }
-.miss{
-        background-image:url('/assets/images/textura-de-agua_21615.jpg');
-}
+
 
 #buttom{
 float:right;
@@ -173,6 +172,14 @@ float:right;
 .win{
      background-color: #f55;
    }
+
+.sunk{
+background:rgb(255,0,0);
+}
+
+.miss{
+        background-image:url('/assets/images/textura-de-agua_21615.jpg');
+}
 
 .ship{
     background-image:url('/assets/images/aircraftCarrier.png');
@@ -256,11 +263,6 @@ float:right;
 
 
 
-
-.sunk{
-background:rgb(255,0,0);
-}
-
 .My_tile{
     float: left;
     width:30px;
@@ -308,13 +310,31 @@ background:rgb(255,0,0);
 }
 
 #popup{
-	position:fixed;
-	width:40%;
- 	background-color:rgba(255,255,255,0.9);
+	position:absolute;
+    background: url('/assets/images/gray_bg.gif') repeat-y 0 0;
 	display:none;
 	z-index:2;
 	left:30%;
 	top:20%;
+    height: 50%;
+    width: 40%;
+    line-height: 48px;
+    border: 1px;
+    -webkit-box-shadow: 0px 1px #717171;
+    box-shadow: 0px 1px #717171;
+    border-radius: 12px 12px 12px 12px;
+
+}
+
+#popup h2{
+        margin: 25% 15% 25% 15%;
+       font: 36px/36px  Helvetica, Arial, sans-serif;
+       color: black;
+       font-weight: bold;
+}
+
+#popup img{
+	float:right;
 }
 
 .button.blue:hover {
@@ -376,9 +396,7 @@ text-shadow: 0px 2px rgba(1, 1, 1, 0.5);
 color: black;
 text-transform: uppercase;
 border-color: #A4A4A4;
-background: #FAD540;
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAD540), color-stop(100%,#FBB64A));
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fad540', endColorstr='#fbb64a',GradientType=0 );
+
 }
 
 #playbutton {

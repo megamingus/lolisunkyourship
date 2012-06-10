@@ -10,11 +10,20 @@ function toggle(){
         toggleVisibility('blackback');
 }
 
-function popUp(msg){
-    console.log("Hey!! POP!!")
-	document.getElementById('popup').innerHTML="<h2>@username+" you "+msg</h2>";
+function popUp(username,msg){
+  	document.getElementById('popup').innerHTML="<img onclick=\"popUpClose();\" src=\"/assets/images/close.png\"/><h2>username+you+msg</h2>";
 	toggle();
 }
 function popUpClose(){
 	toggle();
 }
+
+function toggleVisibility(elem)
+    {
+            var control = document.getElementById(elem);
+            if(control.style.display == "none" || control.style.display == "" ){
+                control.style.display = "block";
+            }else{
+                control.style.display = "none";
+            }
+    }

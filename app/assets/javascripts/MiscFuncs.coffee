@@ -1,5 +1,6 @@
-ships=[["aircraftCarrier",5,"Aircraft carrier"], ["battleship",4,"Battleship"],["destroyer",3,"Destroyer"]
-  ["patrolShip",2,"Patrol boat"],["submarine",3,"Submarine"]]
+@ships=[["carrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
+  ["destroyer",3,"Destroyer","destroyer"],
+  ["patrolShip",2,"Patrol boat","patrol"],["submarine",3,"Submarine","submarine"]]
 
 letters = new Array("A","B","C","D","E","F","G","H","I","J")
 

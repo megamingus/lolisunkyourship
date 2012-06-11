@@ -1,6 +1,10 @@
-@ships=[["carrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
+@ships=[["aircraftCarrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
   ["destroyer",3,"Destroyer","destroyer"],
   ["patrolShip",2,"Patrol boat","patrol"],["submarine",3,"Submarine","submarine"]]
+@botConversion =(shipName)->
+  return ship[3]  for ship in ships when ship[2] is shipName
+
+
 
 letters = new Array("A","B","C","D","E","F","G","H","I","J")
 
@@ -48,9 +52,15 @@ selectedShip=exports ? this
 
 @dropIt = (event) ->
   if event.preventDefault then event.preventDefault()
+
+  #if event.target.childNodes.length > 0 then event.preventDefault()
+
   log event.dataTransfer.getData("text/html")
   id = event.dataTransfer.getData("text/html")
   element = document.getElementById(id)
+
+
+
   event.target.appendChild(element);
   #$(event.target).addClass('ship')
   tileId=$(event.target).attr('id').substr(9)
@@ -60,7 +70,7 @@ selectedShip=exports ? this
 @dragIt=(div,event)->
   selectedShip=$(div)
   sendResetPosition(selectedShip.attr('shipType'))
-  event.dataTransfer.setDragImage(div, 5, 20)
+  #event.dataTransfer.setDragImage(div, 5, 20)
   event.dataTransfer.setData("text/html",event.target.id)
 ###
 log div
@@ -107,8 +117,6 @@ cancel=(event)->
 
 log=(msg)->
   console.log msg
-
-
 
 @chatMessage=(data,username)->
   # Create the message element

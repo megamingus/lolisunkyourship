@@ -1,3 +1,10 @@
+var aircraftCarrier=new Array();
+var destroyer=new Array();
+var battleship=new Array();
+var patrolShip=new Array();
+var submarine=new Array();
+
+
 
 function WsConnection(ws, recive){
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
@@ -25,7 +32,7 @@ WsConnection.prototype.ws=function(json){
 }
 
 $(document).ready(function() {
-
+    bot = new BattleshipBot();
     var letters = new Array("A","B","C","D","E","F","G","H","I","J");
     //creo la primer fila de numeros
     var html="<div class='boardRow'>"
@@ -71,7 +78,6 @@ function attack(tile){
 }
 
 function ready(){
-    bot = new BattleshipBot();
     document.getElementById("board").style.display ="block";
     document.getElementById("main").style.display ="block";
     document.getElementById("shipyard").style.display ="none";
@@ -138,10 +144,9 @@ function battleRecieve(username,event) {
                 botAttack()
             }
             //si ataque yo
-        }else {
-            var tile=json.tile
-            tile.x=parseInt(tile.substr(1))
-            tile.y=tile.substr(0,1).charCodeAt()-65
+        }else if(json.tile){
+            var tileX=json.tile.substr(0,1).charCodeAt()-65
+            var tileY=parseInt(json.tile.substr(1))-1
             var command=json.state
             if(json.state=='win'){
                 popUp("won");
@@ -160,7 +165,7 @@ function battleRecieve(username,event) {
             }       */
 
             if(json.state == 'sunk'){
-               command=json.shipName;
+               command=botConversion(json.shipName)
                 for(positions in json.shipPositions){
                     $('#My_board_'+json.tile).removeClass('hit');
                     $('#'+json.shipPositions[positions]).addClass(json.state);
@@ -174,8 +179,8 @@ function battleRecieve(username,event) {
                 $('#'+json.tile).addClass(json.state);
 
             }
-            bot.update(tile.x,tile.y,command);
-            console.log("updating bot:"+tile.x,tile.y,command);
+            bot.update(tileX,tileY,command);
+            console.log("updating bot:"+tileX+tileY+" comm: "+command);
         }
     }
 }
@@ -183,9 +188,12 @@ function battleRecieve(username,event) {
 
 
 
-
 function drawStrategy(json){
+
+
     for(x=0;x < json.shipPositions.length;x++){
+    console.log(json);
+
         if(json.orientation=="true"){
             $('#My_board_'+json.shipPositions[x]).addClass(json.shipName);
             div ='My_board_'+json.shipPositions[x];
@@ -194,13 +202,60 @@ function drawStrategy(json){
             $('#My_board_'+json.shipPositions[x]).addClass(json.shipName+'Vertical');
             div ='My_board_'+json.shipPositions[x];
             document.getElementById(div).style.backgroundPosition = '0px'+' '+-32*x+"px";
-
-        }
+           }
     }
+
+      if(json.shipName=="aircraftCarrier"){
+            for(y=0;y<aircraftCarrier.length;y++){
+             if(json.orientation=="true"){
+             $('#My_board_'+aircraftCarrier[y]).removeClass("aircraftCarrier")
+            }else{
+             $('#My_board_'+aircraftCarrier[y]).removeClass("aircraftCarrierVertical")
+                }
+            }
+
+              aircraftCarrier=json.shipPositions;
+           }else if(json.shipName=="battleship"){
+                 for(y=0;y<battleship.length;y++){
+                             if(json.orientation=="true"){
+                                          $('#My_board_'+battleship[y]).removeClass("battleship")
+                                         }else{
+                                          $('#My_board_'+battleship[y]).removeClass("battleshipVertical")
+                                             }
+                            }
+                              battleship=json.shipPositions;
+           }else if(json.shipName=="patrolShip"){
+                    for(y=0;y<patrolShip.length;y++){
+                                if(json.orientation=="true"){
+                                             $('#My_board_'+patrolShip[y]).removeClass("patrolShip")
+                                            }else{
+                                             $('#My_board_'+patrolShip[y]).removeClass("patrolShipVertical")
+                                                }
+                               }
+                                 patrolShip=json.shipPositions;
+           }else if(json.shipName=="submarine"){
+                 for(y=0;y<submarine.length;y++){
+                             if(json.orientation=="true"){
+                                          $('#My_board_'+submarine[y]).removeClass("submarine")
+                                         }else{
+                                          $('#My_board_'+submarine[y]).removeClass("submarineVertical")
+                                             }
+                            }
+                              submarine=json.shipPositions;
+           }else{
+                 for(y=0;y<destroyer.length;y++){
+                            if(json.orientation=="true"){
+                                         $('#My_board_'+destroyer[y]).removeClass("destroyer")
+                                        }else{
+                                         $('#My_board_'+destroyer[y]).removeClass("destroyerVertical")
+                                            }
+                            }
+                              destroyer=json.shipPositions;
+           }
+
+
+
 }
-
-
-
 
 
 function chatRecieve(username,event) {
@@ -248,6 +303,6 @@ function botAttack(){
         var letters = new Array("A","B","C","D","E","F","G","H","I","J");
         console.log("bot play!");
         var point = bot.suggest();
-        var tile=""+letters[point.x]+point.y.toString()
+        var tile=""+letters[point.x]+(point.y+1).toString()
         attack(tile);
 }

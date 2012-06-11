@@ -15,6 +15,9 @@ public class Ship {
     private String[] positions;
 
 
+
+    private String[] previwPositions;
+
     private int size;
     private String name;
     private boolean sunk;
@@ -97,4 +100,12 @@ public class Ship {
        public String getHeader() {
            return header;
        }
+
+    public String[] getPreviwPositions() {
+        return previwPositions;
+    }
+
+    public void setPreviwPositions(String[] previwPositions) {
+        this.previwPositions = previwPositions;
+    }
 }

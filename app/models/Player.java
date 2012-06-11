@@ -189,7 +189,6 @@ public class Player {
 
     public List<String> getShipPositions(){
         //createPositionList();
-        System.out.println(shipsPositions);
 
         return shipsPositions;
     }
@@ -209,6 +208,7 @@ public class Player {
 
         Ship ship = getShipByName(shipName);
 
+
                     String letter = tile.substring(0,1);
                     int number = Integer.parseInt(tile.substring(1));
                     ship.setHeader(tile);
@@ -216,7 +216,6 @@ public class Player {
                        if((number+ship.getSize()-1)<=10){
                            for(int i=ship.getCurrentSize();i<ship.getSize();i++){
                               ship.getPositions()[ship.getCurrentSize()]=letter+number;
-                              System.out.println(ship.getPositions()[ship.getCurrentSize()]);
                               ship.setCurrentSize(ship.getCurrentSize()+1);
                               number++;
                           }
@@ -232,11 +231,11 @@ public class Player {
                             }
 
                         }
-                        System.out.println(letters[letterIndex]);
+
                         if((letterIndex+ship.getSize())<=10){
                             for(int k=ship.getCurrentSize();k<ship.getSize();k++){
                                  ship.getPositions()[ship.getCurrentSize()]=letters[letterIndex]+number;
-                                 System.out.println(ship.getPositions()[ship.getCurrentSize()]);
+
                                  ship.setCurrentSize(ship.getCurrentSize()+1);
                                  letterIndex++;
 
@@ -245,7 +244,12 @@ public class Player {
 
                     }
 
-                    if(shipIsOverlayed(ship.getPositions())){
+
+
+
+
+
+        if(shipIsOverlayed(ship.getPositions())){
                         ship.resetPositions();
                     }else{
                         for(String pos : ship.getPositions()){
@@ -253,7 +257,7 @@ public class Player {
 
                         }
                     }
-                    System.out.println(orientation);
+
                     //refreshShip(shipName,ship);
 
                 }

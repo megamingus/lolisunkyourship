@@ -188,7 +188,7 @@ public class Player {
        }
 
     public List<String> getShipPositions(){
-        //createPositionList();
+
 
         return shipsPositions;
     }
@@ -216,6 +216,7 @@ public class Player {
                        if((number+ship.getSize()-1)<=10){
                            for(int i=ship.getCurrentSize();i<ship.getSize();i++){
                               ship.getPositions()[ship.getCurrentSize()]=letter+number;
+                              System.out.println(ship.getPositions()[ship.getCurrentSize()]);
                               ship.setCurrentSize(ship.getCurrentSize()+1);
                               number++;
                           }
@@ -235,7 +236,7 @@ public class Player {
                         if((letterIndex+ship.getSize())<=10){
                             for(int k=ship.getCurrentSize();k<ship.getSize();k++){
                                  ship.getPositions()[ship.getCurrentSize()]=letters[letterIndex]+number;
-
+                                 System.out.println(ship.getPositions()[ship.getCurrentSize()]);
                                  ship.setCurrentSize(ship.getCurrentSize()+1);
                                  letterIndex++;
 

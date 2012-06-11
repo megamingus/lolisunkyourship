@@ -245,11 +245,6 @@ public class Player {
 
                     }
 
-
-
-
-
-
         if(shipIsOverlayed(ship.getPositions())){
                         ship.resetPositions();
                     }else{

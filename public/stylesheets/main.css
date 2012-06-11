@@ -174,13 +174,6 @@ float:right;
      background-color: #f55;
    }
 
-.ship{
-    background-image:url('/assets/images/aircraftCarrier.png');
-
-    background-repeat:no-repeat;
-
-}
-
 .aircraftCarrier{
     background-image:url('/assets/images/aircraftCarrier.png');
 
@@ -253,7 +246,9 @@ float:right;
 
 }
 
+.ship{
 
+}
 
 
 

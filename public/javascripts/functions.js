@@ -190,68 +190,77 @@ function battleRecieve(username,event) {
 
 function drawStrategy(json){
 
+if(json.shipName=="aircraftCarrier"){
+            for(y=0;y<aircraftCarrier.length;y++){
+
+             $('#My_board_'+aircraftCarrier[y]).removeClass("aircraftCarrier")
+              $('#My_board_'+aircraftCarrier[y]).removeClass("ship")
+             $('#My_board_'+aircraftCarrier[y]).removeClass("aircraftCarrierVertical")
+
+            }
+
+              aircraftCarrier=json.shipPositions;
+
+           }else if(json.shipName=="battleship"){
+                 for(y=0;y<battleship.length;y++){
+
+                 $('#My_board_'+battleship[y]).removeClass("battleship")
+               $('#My_board_'+battleship[y]).removeClass("ship")
+                 $('#My_board_'+battleship[y]).removeClass("battleshipVertical")
+
+
+
+                  }
+                              battleship=json.shipPositions;
+
+           }else if(json.shipName=="patrolShip"){
+                    for(y=0;y<patrolShip.length;y++){
+
+                    $('#My_board_'+patrolShip[y]).removeClass("patrolShip")
+                    $('#My_board_'+patrolShip[y]).removeClass("ship")
+                    $('#My_board_'+patrolShip[y]).removeClass("patrolShipVertical")
+
+                        }
+                                 patrolShip=json.shipPositions;
+       }else if(json.shipName=="submarine"){
+             for(y=0;y<submarine.length;y++){
+
+             $('#My_board_'+submarine[y]).removeClass("submarine")
+             $('#My_board_'+submarine[y]).removeClass("ship")
+             $('#My_board_'+submarine[y]).removeClass("submarineVertical")
+
+                        }
+                          submarine=json.shipPositions;
+       }else{
+             for(y=0;y<destroyer.length;y++){
+
+             $('#My_board_'+destroyer[y]).removeClass("destroyer")
+             $('#My_board_'+destroyer[y]).removeClass("ship")
+             $('#My_board_'+destroyer[y]).removeClass("destroyerVertical")
+             }
+                          destroyer=json.shipPositions;
+       }
 
     for(x=0;x < json.shipPositions.length;x++){
     console.log(json);
 
+
+
+
         if(json.orientation=="true"){
             $('#My_board_'+json.shipPositions[x]).addClass(json.shipName);
+             $('#My_board_'+json.shipPositions[x]).addClass("ship");
             div ='My_board_'+json.shipPositions[x];
             document.getElementById(div).style.backgroundPosition = -32*x+'px 0px';
         }else{
             $('#My_board_'+json.shipPositions[x]).addClass(json.shipName+'Vertical');
+             $('#My_board_'+json.shipPositions[x]).addClass("ship");
             div ='My_board_'+json.shipPositions[x];
             document.getElementById(div).style.backgroundPosition = '0px'+' '+-32*x+"px";
            }
     }
 
-      if(json.shipName=="aircraftCarrier"){
-            for(y=0;y<aircraftCarrier.length;y++){
-             if(json.orientation=="true"){
-             $('#My_board_'+aircraftCarrier[y]).removeClass("aircraftCarrier")
-            }else{
-             $('#My_board_'+aircraftCarrier[y]).removeClass("aircraftCarrierVertical")
-                }
-            }
 
-              aircraftCarrier=json.shipPositions;
-           }else if(json.shipName=="battleship"){
-                 for(y=0;y<battleship.length;y++){
-                             if(json.orientation=="true"){
-                                          $('#My_board_'+battleship[y]).removeClass("battleship")
-                                         }else{
-                                          $('#My_board_'+battleship[y]).removeClass("battleshipVertical")
-                                             }
-                            }
-                              battleship=json.shipPositions;
-           }else if(json.shipName=="patrolShip"){
-                    for(y=0;y<patrolShip.length;y++){
-                                if(json.orientation=="true"){
-                                             $('#My_board_'+patrolShip[y]).removeClass("patrolShip")
-                                            }else{
-                                             $('#My_board_'+patrolShip[y]).removeClass("patrolShipVertical")
-                                                }
-                               }
-                                 patrolShip=json.shipPositions;
-           }else if(json.shipName=="submarine"){
-                 for(y=0;y<submarine.length;y++){
-                             if(json.orientation=="true"){
-                                          $('#My_board_'+submarine[y]).removeClass("submarine")
-                                         }else{
-                                          $('#My_board_'+submarine[y]).removeClass("submarineVertical")
-                                             }
-                            }
-                              submarine=json.shipPositions;
-           }else{
-                 for(y=0;y<destroyer.length;y++){
-                            if(json.orientation=="true"){
-                                         $('#My_board_'+destroyer[y]).removeClass("destroyer")
-                                        }else{
-                                         $('#My_board_'+destroyer[y]).removeClass("destroyerVertical")
-                                            }
-                            }
-                              destroyer=json.shipPositions;
-           }
 
 
 

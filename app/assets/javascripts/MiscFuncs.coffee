@@ -51,11 +51,16 @@ selectedShip=exports ? this
 
 
 @dropIt = (event) ->
+
+ id=  $(event.target).attr('id')
+ log $(event.target).attr('Class')
+ if (($("#"+id).hasClass('ship'))or(id=='aircraftCarrier0')or(id=='battleship1')or(id=='destroyer2')or(id=='patrolShip3')or(id=='submarine4'))
+ else
   if event.preventDefault then event.preventDefault()
 
   #if event.target.childNodes.length > 0 then event.preventDefault()
 
-  log event.dataTransfer.getData("text/html")
+
   id = event.dataTransfer.getData("text/html")
   element = document.getElementById(id)
 

@@ -250,7 +250,7 @@ public class Player {
 
 
 
-        if(shipIsOverlayed(ship.getPositions())){
+        if(shipIsOverlayed(ship)){
                         ship.resetPositions();
                     }else{
                         for(String pos : ship.getPositions()){
@@ -272,13 +272,26 @@ public class Player {
              }
         }
 
-        public boolean  shipIsOverlayed(String[] draftPositions){
-              for(String position : draftPositions){
+        public boolean  shipIsOverlayed(Ship ship){
+            for(Ship s:ships){
+                if(null!=s && !ship.equals(s)){
+                    for(String pos:ship.getPositions()){
+                        for(String p:s.getPositions()){
+                             if(pos.equals(p)){
+                                 return true;
+                             }
+                        }
+                    }
+                }
+
+            }
+            return false ;
+             /* for(String position : draftPositions){
                   if(shipsPositions.contains(position)){
                       return true;
                   }
               }
-            return false;
+            return false;*/
         }
 
 

@@ -28,6 +28,7 @@
     
     <script type="text/javascript" charset="utf-8">
         conn=new WsConnection("@routes.Application.chat(username).webSocketURL(request)",function(event) {chatRecieve("@username",event)})
+        $("#talk").keypress(handleReturnKey)
     </script>
     
 }

@@ -273,9 +273,13 @@ public class Player {
         }
 
         public boolean  shipIsOverlayed(Ship ship){
+
             for(Ship s:ships){
                 if(null!=s && !ship.equals(s)){
                     for(String pos:ship.getPositions()){
+                        if (pos==null || (pos.length()<2 || pos.length()>3 || ((int) pos.charAt(0))<(int)'A' ||((int) pos.charAt(0))>(int)'J' || Integer.parseInt(pos.substring(1))<1 || Integer.parseInt(pos.substring(1))>10 )){
+                            return true;
+                        }
                         for(String p:s.getPositions()){
                              if(pos.equals(p)){
                                  return true;

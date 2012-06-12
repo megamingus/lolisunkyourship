@@ -152,7 +152,8 @@ body {
     overflow:hidden;
     border-style: solid;
     border-width: 1px;
-    background-image:url('/assets/images/textura-de-agua_21615.jpg');
+    background-color: #5f9ea0;
+    /*background-image:url('/assets/images/textura-de-agua_21615.jpg');*/
 }
 .boardRow{
     clear:both;
@@ -166,12 +167,21 @@ float:right;
 }
 
 .hit{
-     background-color: rgb(255,255,0);
+    background-color: rgb(255,255,0);
+    background-image:url('/assets/images/hit.png');
 }
 
 .win{
      background-color: #f55;
    }
+
+.miss{
+    background-image:url('/assets/images/textura-de-agua_21615.jpg');
+}
+
+.sunk{
+background:rgb(255,0,0);
+}
 
 .ship{
     background-image:url('/assets/images/aircraftCarrier.png');
@@ -182,7 +192,7 @@ float:right;
 
 .aircraftCarrier{
     background-image:url('/assets/images/aircraftCarrier.png');
-
+    z-index: 50;
     background-repeat:no-repeat;
 
 }
@@ -257,6 +267,11 @@ float:right;
 }
 
 
+
+.sunk{
+background:rgb(255,0,0);
+}
+
 .My_tile{
     float: left;
     width:30px;
@@ -265,6 +280,8 @@ float:right;
     overflow:hidden;
     border-style: solid;
     border-width: 1px;
+    background-color: cadetBlue;
+    /*background-image:url('/assets/images/textura-de-agua_21615.jpg');*/
 }
 .My_boardRow{
     clear:both;
@@ -321,7 +338,8 @@ float:right;
 }
 
 #popup h2{
-        margin: 25% 15% 25% 15%;
+    margin-top: 25%;
+    margin-left: 30%;
        font: 36px/36px  Helvetica, Arial, sans-serif;
        color: black;
        font-weight: bold;
@@ -329,6 +347,7 @@ float:right;
 
 #popup img{
 	float:right;
+}
 }
 
 .button.blue:hover {

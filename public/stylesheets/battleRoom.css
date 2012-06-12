@@ -1,4 +1,67 @@
 #readyButton{
     display: block;
-    width: 200px;
+    width: 225px;
+    margin-left: 0.4%;
 }
+
+.page-header{
+    background-color: transparent;
+}
+.content {
+    background-color: transparent;
+}
+
+#positionShips h3{
+    color:#ffffff;
+    font-family: Helvetica,Verdana, Geneva, Arial, sans-serif;
+    font-weight: normal;
+    margin-bottom: 3px;
+}
+
+.battleRoomPanel{
+    float: right;
+    width: 32%;
+    height: 240px;
+    background: url('/assets/images/gray_bg.gif') repeat-y 0 0;
+    text-align: center;
+    padding-top: 45px;
+    -webkit-box-shadow: 0px 1px #717171;
+    box-shadow: 0px 1px #717171;
+    border-radius: 12px 12px 12px 12px;
+}
+
+
+#main{
+    float: right;
+    width: 20.6%;
+    margin-right: 3%;
+    margin-top: -19%;
+    height: 215px;
+    background-color:#f5f5f5;
+    text-align: left;
+    padding-top: 45px;
+    -webkit-box-shadow: 0px 1px #717171;
+    box-shadow: 0px 1px #717171;
+    border-radius: 12px 12px 12px 12px;
+}
+
+
+#autoPlay{
+    display:none;
+    float:right;
+    margin-right: 3%;
+    margin-top: -0.1%;
+    padding: 0% 5%
+}
+
+#okButton{
+    padding: 0% 2%;
+    width: 40%;
+    margin-left: 30%;
+}
+
+
+
+
+
+

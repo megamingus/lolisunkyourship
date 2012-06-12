@@ -220,7 +220,9 @@ public class BattleRoom extends UntypedActor {
                 notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).enemy.getShip(tile).getPositions(),members.get(player).enemy.getShip(tile).getName())));
             } break;
             case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
-            case LOST_GAME: notifyResult(player,tile,"Hurrah!! VICTORY!!!","Our fleet has been defeated...Its back to scrubbing the decks for you Captain!",Json.toJson(new msg(tile,"win",members.get(player).enemy.username))); break;
+            case LOST_GAME: notifyResult(player,tile,"win","lose",Json.toJson("EndGame"));
+
+                            break;
             default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
         }
 
@@ -230,10 +232,16 @@ public class BattleRoom extends UntypedActor {
         //notifyAll("attack", player,"attacked "+messageAll);
         //Notify the player
         //notifyPlayer("info", player, "Commander", messagePlayer1,json);
-        notifyPlayer("info", player, "Commander","",json);
-        //Notify the enemy
-        //notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
-        notifyPlayer("info",members.get(player).enemy.username,"Commander","",json);
+        if(json.isValueNode() && json.getTextValue().equals("EndGame")){
+            notifyPlayer("info", player, "Commander", messagePlayer1,json);
+            notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
+        }  else{
+            notifyPlayer("info", player, "Commander","",json);
+                   //Notify the enemy
+                   //notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
+                   notifyPlayer("info",members.get(player).enemy.username,"Commander","",json);
+        }
+
     }
 
     public void notifyPlayer(String kind,String user,String from, String text,JsonNode json){

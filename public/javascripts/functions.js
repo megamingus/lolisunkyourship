@@ -110,6 +110,12 @@ function battleRecieve(username,event) {
         $("#onChat").show()
     }
 
+    var json=JSON.parse(data.data)
+           if(json=="EndGame"){
+                       console.log("MSG: "+data.message);
+                                   popUp(username,data.message);
+                               }
+
     if (data.message){
         chatMessage(data,username)
     }
@@ -121,7 +127,8 @@ function battleRecieve(username,event) {
 
         var json=JSON.parse(data.data)
 
-        console.log(json);
+
+
         //+++++++++++++++++++++++++++++Strategy++++++++++++++++++++++++++++++++++++++//
         if(json.type=='strategy'){
             drawStrategy(json)
@@ -131,27 +138,38 @@ function battleRecieve(username,event) {
 
         //si me atacaron
         if(json.board == username){
+
+
             if(json.state == 'sunk'){
                 for(positions in json.shipPositions){
                     $('#My_board_'+json.tile).removeClass('hit');
-                    $('#My_board_'+json.shipPositions[positions]).addClass(json.state);
+                    document.getElementById('My_board_'+json.shipPositions[positions]).style.backgroundColor="red";
+
 
                 }
             }else{
-                $('#My_board_'+json.tile).addClass(json.state);
+               /* $('#My_board_'+json.tile).toggleClass(json.state);   */
+
+                if(json.state=='hit'){
+                    document.getElementById('My_board_'+json.tile).style.backgroundColor="yellow";
+                } else{
+                    $('#My_board_'+json.tile).toggleClass(json.state);
+                }
+
             }
             if(autoplay){
                 botAttack()
             }
             //si ataque yo
         }else if(json.tile){
+
+
+
             var tileX=json.tile.substr(0,1).charCodeAt()-65
             var tileY=parseInt(json.tile.substr(1))-1
             var command=json.state
-            if(json.state=='win'){
-                popUp("won");
 
-            }
+
            /* console.log("tile: "+json.tile)
             var letterPos = json.tile;
             var letritas=letterPos.substr(0,1);
@@ -168,7 +186,7 @@ function battleRecieve(username,event) {
                command=botConversion(json.shipName)
                 for(positions in json.shipPositions){
                     $('#My_board_'+json.tile).removeClass('hit');
-                    $('#'+json.shipPositions[positions]).addClass(json.state);
+                    $('#'+json.shipPositions[positions]).toggleClass(json.state);
 
                 }
 
@@ -176,7 +194,7 @@ function battleRecieve(username,event) {
                 //console.log(letterIndex+1+" "+json.tile.substring(1)+" "+json.state)
                // bot.update(parseInt(json.tile.substring(1)),letterIndex+1,json.state);
 
-                $('#'+json.tile).addClass(json.state);
+                $('#'+json.tile).toggleClass(json.state);
 
             }
             bot.update(tileX,tileY,command);

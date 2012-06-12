@@ -11,7 +11,11 @@ function toggle(){
 }
 
 function popUp(username,msg){
-  	document.getElementById('popup').innerHTML="<img onclick=\"popUpClose();\" src=\"/assets/images/close.png\"/><h2>username+you+msg</h2>";
+    console.log("el mensaje es"+msg+"y el username es"+username);
+
+
+    document.getElementById("result").textContent=username+" you "+msg+"!";
+    document.getElementById("okButton").onclick="location.href='http://localhost:9000/room?username="+username+"'\"";
 	toggle();
 }
 function popUpClose(){

@@ -1,5 +1,10 @@
-ships=[["aircraftCarrier",5,"Aircraft carrier"], ["battleship",4,"Battleship"],["destroyer",3,"Destroyer"]
-  ["patrolShip",2,"Patrol boat"],["submarine",3,"Submarine"]]
+@ships=[["aircraftCarrier",5,"Aircraft carrier","carrier"], ["battleship",4,"Battleship","battleship"],
+  ["destroyer",3,"Destroyer","destroyer"],
+  ["patrolShip",2,"Patrol boat","patrol"],["submarine",3,"Submarine","submarine"]]
+@botConversion =(shipName)->
+  return ship[3]  for ship in ships when ship[2] is shipName
+
+
 
 letters = new Array("A","B","C","D","E","F","G","H","I","J")
 
@@ -46,10 +51,21 @@ selectedShip=exports ? this
 
 
 @dropIt = (event) ->
+
+ id=  $(event.target).attr('id')
+ log $(event.target).attr('Class')
+ if (($("#"+id).hasClass('ship'))or(id=='aircraftCarrier0')or(id=='battleship1')or(id=='destroyer2')or(id=='patrolShip3')or(id=='submarine4'))
+ else
   if event.preventDefault then event.preventDefault()
-  log event.dataTransfer.getData("text/html")
+
+  #if event.target.childNodes.length > 0 then event.preventDefault()
+
+
   id = event.dataTransfer.getData("text/html")
   element = document.getElementById(id)
+
+
+
   event.target.appendChild(element);
   #$(event.target).addClass('ship')
   tileId=$(event.target).attr('id').substr(9)
@@ -59,7 +75,7 @@ selectedShip=exports ? this
 @dragIt=(div,event)->
   selectedShip=$(div)
   sendResetPosition(selectedShip.attr('shipType'))
-  event.dataTransfer.setDragImage(div, 5, 20)
+  #event.dataTransfer.setDragImage(div, 5, 20)
   event.dataTransfer.setData("text/html",event.target.id)
 ###
 log div
@@ -98,7 +114,7 @@ cancel=(event)->
 @readyToPlay=->
   $(".draggableShip").hide()
   conn.ws({send:{
-  ready: "ready"
+    ready: "ready"
   }})
 
 @isHorizontal=(img)->
@@ -106,3 +122,29 @@ cancel=(event)->
 
 log=(msg)->
   console.log msg
+
+@chatMessage=(data,username)->
+  # Create the message element
+  el = $('<div class="message"><span></span><p></p></div>')
+  $("span", el).text(data.user+":")
+  $("p", el).text(data.message)
+  $(el).addClass(data.kind)
+  if(data.user == username)
+    $(el).addClass('me')
+  $('#messages').append(el)
+
+
+
+
+
+###
+@ready=->
+  bot = new BattleshipBot();
+  $("#board").show()
+  $("#main").show
+  $("#shipyard").hide
+  $("#buttom").hide
+  $("#onChat").removeClass('onChat');
+  alert("ready")
+  readyToPlay()
+   ###

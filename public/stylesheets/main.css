@@ -173,14 +173,6 @@ float:right;
      background-color: #f55;
    }
 
-.sunk{
-background:rgb(255,0,0);
-}
-
-.miss{
-        background-image:url('/assets/images/textura-de-agua_21615.jpg');
-}
-
 .ship{
     background-image:url('/assets/images/aircraftCarrier.png');
 
@@ -260,7 +252,9 @@ background:rgb(255,0,0);
 
 }
 
+.ship{
 
+}
 
 
 .My_tile{

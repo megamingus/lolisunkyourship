@@ -27,53 +27,8 @@
     </div>
     
     <script type="text/javascript" charset="utf-8">
-        conn=new WsConnection("@routes.Application.chat(username).webSocketURL(request)",chatRecieve)
-
-        function chatRecieve(event) {
-            var data = JSON.parse(event.data)
-                
-                // Handle errors
-                if(data.error) {
-                    chatSocket.close()
-                    $("#onError span").text(data.error)
-                    $("#onError").show()
-                    return
-                } else {
-                    $("#onChat").show()
-                }
-                
-                // Create the message element
-                var el = $('<div class="message"><span></span><p></p></div>')
-                $("span", el).text(data.user)
-                $("p", el).text(data.message)
-                $(el).addClass(data.kind)
-                if(data.user == '@username') $(el).addClass('me')
-                $('#chat_messages').append(el)
-                
-                // Update the members list
-                $("#members").html('') 
-                $(data.members).each(function() {
-                    $("#members").append('<li>' + this + '</li>')
-                })
-                if(data.data){
-                      var json=JSON.parse(data.data)
-                    if(json.url){window.location.href=json.url}
-
-                }
-            }
-
-        var handleReturnKey = function(e) {
-            if(e.charCode == 13 || e.keyCode == 13) {
-                e.preventDefault()
-                conn.ws({send:{text: $("#talk").val()},beforeSend:function(){$("#talk").val('')}})
-            }
-        }
+        conn=new WsConnection("@routes.Application.chat(username).webSocketURL(request)",function(event) {chatRecieve("@username",event)})
         $("#talk").keypress(handleReturnKey)
-
-        function play(){
-            conn.ws({send:{play: "play"}})
-        }
-    
     </script>
     
 }

@@ -188,8 +188,7 @@ public class Player {
        }
 
     public List<String> getShipPositions(){
-        //createPositionList();
-        System.out.println(shipsPositions);
+
 
         return shipsPositions;
     }
@@ -208,6 +207,7 @@ public class Player {
     public void addPositionsToShip(String shipName,String tile,String orientation){
 
         Ship ship = getShipByName(shipName);
+
 
                     String letter = tile.substring(0,1);
                     int number = Integer.parseInt(tile.substring(1));
@@ -232,7 +232,7 @@ public class Player {
                             }
 
                         }
-                        System.out.println(letters[letterIndex]);
+
                         if((letterIndex+ship.getSize())<=10){
                             for(int k=ship.getCurrentSize();k<ship.getSize();k++){
                                  ship.getPositions()[ship.getCurrentSize()]=letters[letterIndex]+number;
@@ -245,7 +245,12 @@ public class Player {
 
                     }
 
-                    if(shipIsOverlayed(ship.getPositions())){
+
+
+
+
+
+        if(shipIsOverlayed(ship)){
                         ship.resetPositions();
                     }else{
                         for(String pos : ship.getPositions()){
@@ -253,7 +258,7 @@ public class Player {
 
                         }
                     }
-                    System.out.println(orientation);
+
                     //refreshShip(shipName,ship);
 
                 }
@@ -267,13 +272,26 @@ public class Player {
              }
         }
 
-        public boolean  shipIsOverlayed(String[] draftPositions){
-              for(String position : draftPositions){
+        public boolean  shipIsOverlayed(Ship ship){
+            for(Ship s:ships){
+                if(null!=s && !ship.equals(s)){
+                    for(String pos:ship.getPositions()){
+                        for(String p:s.getPositions()){
+                             if(pos.equals(p)){
+                                 return true;
+                             }
+                        }
+                    }
+                }
+
+            }
+            return false ;
+             /* for(String position : draftPositions){
                   if(shipsPositions.contains(position)){
                       return true;
                   }
               }
-            return false;
+            return false;*/
         }
 
 

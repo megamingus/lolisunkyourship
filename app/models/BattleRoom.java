@@ -159,7 +159,8 @@ public class BattleRoom extends UntypedActor {
                 case POSSITION_SHIP:{
                     if(!members.get(userAction.username).isReady2Play()){
                         members.get(userAction.username).addPositionsToShip(userAction.text,userAction.json.get("tile").asText(),userAction.json.get("horizontal").asText());
-                        notifyPlayer("strategy",userAction.username,"Commander","The "+userAction.text+" is positioned",Json.toJson(new ShipPosition(userAction.json.get("alt").asText(), members.get(userAction.username).getShipByName(userAction.text).getPositions(),userAction.json.get("horizontal").asText())));
+                        //notifyPlayer("strategy",userAction.username,"Commander","The "+userAction.text+" is positioned",Json.toJson(new ShipPosition(userAction.json.get("alt").asText(), members.get(userAction.username).getShipByName(userAction.text).getPositions(),userAction.json.get("horizontal").asText())));
+                        notifyPlayer("strategy",userAction.username,"Commander","",Json.toJson(new ShipPosition(userAction.json.get("alt").asText(), members.get(userAction.username).getShipByName(userAction.text).getPositions(),userAction.json.get("horizontal").asText())));
                     }
 
                 } break;
@@ -226,11 +227,13 @@ public class BattleRoom extends UntypedActor {
     }
 
     public void notifyResult(String player,String messageAll,String messagePlayer1,String messagePlayer2,JsonNode json){
-        notifyAll("attack", player,"attacked "+messageAll);
+        //notifyAll("attack", player,"attacked "+messageAll);
         //Notify the player
-        notifyPlayer("info", player, "Commander", messagePlayer1,json);
+        //notifyPlayer("info", player, "Commander", messagePlayer1,json);
+        notifyPlayer("info", player, "Commander","",json);
         //Notify the enemy
-        notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
+        //notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
+        notifyPlayer("info",members.get(player).enemy.username,"Commander","",json);
     }
 
     public void notifyPlayer(String kind,String user,String from, String text,JsonNode json){
@@ -347,9 +350,6 @@ public class BattleRoom extends UntypedActor {
 
 
            }
-
-
-
 
 
     public static class Quit {

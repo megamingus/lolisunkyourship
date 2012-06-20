@@ -10,7 +10,7 @@
 <script src="@routes.Assets.at("javascripts/popUpManager.js")" type="text/javascript"></script>
 
     <div class="page-header">
-        <h1>Welcome to the Battle room <small>You are captain @username</small></h1>
+        <img src="/assets/images/welcome.png" alt="welcome">
     </div>
     
     <div id="onError" class="alert-message error">
@@ -25,19 +25,9 @@
 
         </div>
         <div class="span2">
-            <h2>Players</h2>
-            <ul id="members">
-            </ul>
+            <h2 id="sideText">Position your ships:</h2>
         </div>
-        <div class="span4" id="shipyard">
-            <!--<div id="dragAndDRop">
-             <div id="ship1Div" draggable="true" class="draggableShip" ondragstart="dragIt('ship1Div',event);"  onclick="toggleDirection(this)" horizontal="true">
-                <img id="ship1" src="@routes.Assets.at("images/aircraftCarrier.png")">
-            </div>
-            <div id="ship2Div" draggable="true" class="draggableShip" ondragstart="dragIt('ship2Div',event);"  onclick="toggleDirection(this)" horizontal="true">
-                <img id="ship4" src="@routes.Assets.at("images/Ship.png")">
-            </div>
-            </div>  -->
+        <div class="battleRoomPanel" id="shipyard">
 
         </div>
         <div id="buttom">
@@ -49,7 +39,11 @@
             </div>
             <textarea id="talk"></textarea>
         </div>
-        <div><input type="checkbox" id="autoplayCheck" onClick=setAutoplay() /></div>
+
+        <div id="autoPlay" class="blue button main">
+            <h2>AUTOPLAY</h2>
+            <input  type="checkbox" value="AUTOPLAY" onClick=setAutoplay()/>
+        </div>
 
 
 

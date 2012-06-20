@@ -38,16 +38,6 @@ $(document).ready(function() {
     var html="<div class='boardRow'>"
     var html2="<div id='boardContainer' class='My_boardRow'>"
 
-/*    html+="<span class='tile'></span>"
-      html2+="<span class='My_tile'></span>"
-    for (var i = 1; i < 11; i++) {
-        html+="<span class='tile'>"+i+"</span>"
-        html2+="<span class='My_tile'>"+i+"</span>"
-    }
-    html+="</div>"
-        html2+="</div>"   */
-    //creo las filas
-
     for (var i = 0; i < letters.length; i++) {
         html+="<div class='boardRow'>"
        // html+="<span class='tile'>"+letters[i]+"</span>"
@@ -80,10 +70,12 @@ function attack(tile){
 function ready(){
     document.getElementById("board").style.display ="block";
     document.getElementById("main").style.display ="block";
+    document.getElementById("autoPlay").style.display ="block";
     document.getElementById("shipyard").style.display ="none";
     document.getElementById("buttom").style.display ="none";
+    document.getElementById("sideText").style.display="none";
     $("#onChat").removeClass('onChat');
-    readyToPlay()
+    readyToPlay() ;
 }
 function setAutoplay(){
     if(document.getElementById("autoplayCheck").checked==1){
@@ -120,8 +112,8 @@ function battleRecieve(username,event) {
         chatMessage(data,username)
     }
     //Update the members list
-    $("#members").html('')
-    $(data.members).each(function(){$("#members").append('<li>' + this + '</li>')})
+   // $("#members").html('')
+   // $(data.members).each(function(){$("#members").append('<li>' + this + '</li>')})
 
     if(data.data){
 

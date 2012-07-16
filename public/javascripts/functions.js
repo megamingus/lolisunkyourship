@@ -70,7 +70,7 @@ function attack(tile){
 function ready(){
     document.getElementById("board").style.display ="block";
     document.getElementById("main").style.display ="block";
-    document.getElementById("autoPlay").style.display ="block";
+    document.getElementById("autoPlay").style.display ="inline";
     document.getElementById("shipyard").style.display ="none";
     document.getElementById("buttom").style.display ="none";
     document.getElementById("sideText").style.display="none";

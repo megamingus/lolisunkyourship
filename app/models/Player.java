@@ -81,7 +81,6 @@ public class Player {
     }
 
     public void knowYourEnemy( Map<String, Player>  members){
-        //esto es horrible... pero bue, tengo sueño =)
         for(Player player:members.values()){
             if(!player.equals(this)){
                 this.enemy=player;

@@ -111,7 +111,7 @@
         }
         return _results;
       })();
-      console.log("Excludes : " + ((function() {
+     /* console.log("Excludes : " + ((function() {
         var _len10, _n, _results;
         _results = [];
         for (_n = 0, _len10 = exclude.length; _n < _len10; _n++) {
@@ -119,10 +119,10 @@
           _results.push(this.fromScalar(res));
         }
         return _results;
-      }).call(this)));
+      }).call(this))); */
       this.printData(this.information, "ships");
       this.printData(data, "probabilities");
-      console.log("Max probability : " + max + " on slots -> " + ((function() {
+     /* console.log("Max probability : " + max + " on slots -> " + ((function() {
         var _len10, _n, _results;
         _results = [];
         for (_n = 0, _len10 = result.length; _n < _len10; _n++) {
@@ -130,7 +130,7 @@
           _results.push(this.fromScalar(res));
         }
         return _results;
-      }).call(this)));
+      }).call(this)));  */
       return result = this.fromScalar(result[Math.floor(Math.random() * result.length)]);
     };
     BattleshipBot.prototype.xproj = function(slot, tile) {
@@ -153,7 +153,7 @@
     };
     BattleshipBot.prototype.printData = function(data, msg) {
       var i, _results;
-      console.log("Displaying " + msg + " data :");
+   /*  console.log("Displaying " + msg + " data :");   */
       _results = [];
       for (i = 0; i <= 9; i++) {
         _results.push(console.log(data.slice(i * 10, ((i + 1) * 10 - 1 + 1) || 9e9)));
@@ -195,7 +195,7 @@
         }
         return _results;
       })();
-      console.log("Max probability : " + max + " on slots -> " + ((function() {
+      /*console.log("Max probability : " + max + " on slots -> " + ((function() {
         var _j, _len3, _results;
         _results = [];
         for (_j = 0, _len3 = result.length; _j < _len3; _j++) {
@@ -203,7 +203,7 @@
           _results.push(this.fromScalar(res));
         }
         return _results;
-      }).call(this)));
+      }).call(this)));  */
       return result = this.fromScalar(result[Math.floor(Math.random() * result.length)]);
     };
     BattleshipBot.prototype.update = function(x, y, command) {

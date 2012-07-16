@@ -1,5 +1,6 @@
 package models;
 
+import controllers.routes;
 import play.mvc.*;
 import play.libs.*;
 import play.libs.F.*;
@@ -165,32 +166,14 @@ public class BattleRoom extends UntypedActor {
 
                 } break;
                 case AUTOPLAY:{
-                    System.out.println("Hohoho");
+
                       members.get(userAction.username).setAutoplayOn(userAction.text);
                                } break;
                 default:{
                     notifyAll("talk", userAction.username, userAction.text);
                 }
             }
-        /*    if (userAction.action.equals(UserAction.Action.ATTACK)) {
-                if(members.size()==2){
-                    if(members.get(userAction.username).myTurn){
-                        communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
-                        for(Player user:members.values()){
-                            user.changeTurn();
-                        }
-                    }else{
-                        notifyPlayer("error",userAction.username,"Commander","We are still preparing the torpedos, my Captain.",Json.toJson(""));
-                    }
-                } else{
-                    notifyPlayer("error",userAction.username,"Commander","Sir, no foes are shown on the radars.",Json.toJson(""));
-                }
-            }if (userAction.action.equals(UserAction.Action.READY)) {
-                notifyPlayer("strategy",userAction.username,"Commander","The fleet is positioned",Json.toJson(members.get(userAction.username).getShipPositions()));
-            }else{
-                if(userAction.text != null && !userAction.text.trim().equals(""))
-                    notifyAll("talk", userAction.username, userAction.text);
-            }     */
+
             
         } else if(message instanceof Quit)  {
             
@@ -233,8 +216,8 @@ public class BattleRoom extends UntypedActor {
         //Notify the player
         //notifyPlayer("info", player, "Commander", messagePlayer1,json);
         if(json.isValueNode() && json.getTextValue().equals("EndGame")){
-            notifyPlayer("info", player, "Commander", messagePlayer1,json);
-            notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,json);
+            notifyPlayer("info", player, "Commander", messagePlayer1,Json.toJson(new endMsg(members.get(player).username)));
+            notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,Json.toJson(new endMsg(members.get(player).enemy.username)));
         }  else{
             notifyPlayer("info", player, "Commander","",json);
                    //Notify the enemy
@@ -326,6 +309,20 @@ public class BattleRoom extends UntypedActor {
 
 
         }
+
+    public static class endMsg{
+               public String endGame;
+               public String myURL;
+
+
+                  //String text;
+
+                    public endMsg(String username) {
+                       endGame="EndGame";
+                       myURL=routes.Application.chat(username).toString();
+
+                    }
+    }
 
     public static class ShipPosition{
         public String shipName;

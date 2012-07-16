@@ -102,10 +102,11 @@ function battleRecieve(username,event) {
         $("#onChat").show()
     }
 
-    var json=JSON.parse(data.data)
-           if(json=="EndGame"){
-                       console.log("MSG: "+data.message);
-                                   popUp(username,data.message);
+    var json=JSON.parse(data.data);
+    console.log(json);
+           if(json.endGame=="EndGame"){
+                       console.log("MSG: "+json.myURL);
+                                   popUp(username,data.message,json.myURL);
                                }
 
     if (data.message){
@@ -162,18 +163,6 @@ function battleRecieve(username,event) {
             var command=json.state
 
 
-           /* console.log("tile: "+json.tile)
-            var letterPos = json.tile;
-            var letritas=letterPos.substr(0,1);
-
-            var letterIndex = 0;
-            for(var j=0;j<letters.length;j++) {
-                if(letters[j]==letritas){
-                    letterIndex=j;
-                }
-                break;
-            }       */
-
             if(json.state == 'sunk'){
                command=botConversion(json.shipName)
                 for(positions in json.shipPositions){
@@ -190,7 +179,7 @@ function battleRecieve(username,event) {
 
             }
             bot.update(tileX,tileY,command);
-            console.log("updating bot:"+tileX+tileY+" comm: "+command);
+            //console.log("updating bot:"+tileX+tileY+" comm: "+command);
         }
     }
 }
@@ -320,7 +309,6 @@ var handleReturnKey = function(e) {
 
 function botAttack(){
         var letters = new Array("A","B","C","D","E","F","G","H","I","J");
-        console.log("bot play!");
         var point = bot.suggest();
         var tile=""+letters[point.x]+(point.y+1).toString()
         attack(tile);

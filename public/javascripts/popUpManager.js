@@ -10,17 +10,23 @@ function toggle(){
         toggleVisibility('blackback');
 }
 
-function popUp(username,msg){
+function popUp(username,msg,url){
     console.log("el mensaje es"+msg+"y el username es"+username);
 
 
     document.getElementById("result").textContent=username+" you "+msg+"!";
-    document.getElementById("okButton").onclick="location.href='http://localhost:9000/room?username="+username+"'\"";
+    document.getElementById("okButton").onclick=redirect(url);
 	toggle();
+}
+
+function redirect(url){
+    window.location.href=url;
 }
 function popUpClose(){
 	toggle();
 }
+
+
 
 function toggleVisibility(elem)
     {

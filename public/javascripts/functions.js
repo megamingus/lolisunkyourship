@@ -88,7 +88,6 @@ function setAutoplay(){
 }
 
 
-
 function battleRecieve(username,event) {
     var data = JSON.parse(event.data)
 
@@ -101,13 +100,14 @@ function battleRecieve(username,event) {
     } else {
         $("#onChat").show()
     }
-
+    if(data.data){
     var json=JSON.parse(data.data);
     console.log(json);
            if(json.endGame=="EndGame"){
                        console.log("MSG: "+json.myURL);
                                    popUp(username,data.message,json.myURL);
                                }
+    }
 
     if (data.message){
         chatMessage(data,username)

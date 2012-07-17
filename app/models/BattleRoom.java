@@ -239,8 +239,14 @@ public class BattleRoom extends UntypedActor {
         //Notify the player
         //notifyPlayer("info", player, "Commander", messagePlayer1,json);
         if(json.isValueNode() && json.getTextValue().equals("EndGame")){
-            notifyPlayer("info", player, "Commander", messagePlayer1,Json.toJson(new endMsg(members.get(player).username)));
-            notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,Json.toJson(new endMsg(members.get(player).enemy.username)));
+            try{
+                notifyPlayer("info", player, "Commander", messagePlayer1,Json.toJson(new endMsg(members.get(player).username)));
+            }catch(NullPointerException e){}
+            try{
+                notifyPlayer("info",members.get(player).enemy.username,"Commander",messagePlayer2,Json.toJson(new endMsg(members.get(player).enemy.username)));
+            }catch(NullPointerException e){
+                notifyPlayer("info",members.values().iterator().next().username,"Commander",messagePlayer2,Json.toJson(new endMsg(members.values().iterator().next().username)));
+            }
         }  else{
             notifyPlayer("info", player, "Commander","",json);
                    //Notify the enemy
@@ -251,7 +257,7 @@ public class BattleRoom extends UntypedActor {
     }
 
     public void notifyPlayer(String kind,String user,String from, String text,JsonNode json){
-
+        try{
         WebSocket.Out<JsonNode> channel= members.get(user).channel;
         ObjectNode event = Json.newObject();
         event.put("kind", kind);
@@ -265,6 +271,10 @@ public class BattleRoom extends UntypedActor {
         }
 
         channel.write(event);
+        }catch(NullPointerException e){
+            //el usuario ya no existe
+        }
+
     }
 
     // Send a Json event to all members

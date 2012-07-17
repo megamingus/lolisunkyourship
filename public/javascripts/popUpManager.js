@@ -15,7 +15,7 @@ function popUp(username,msg,url){
 
 
     document.getElementById("result").textContent=username+" you "+msg+"!";
-    document.getElementById("okButton").onclick=redirect(url);
+    document.getElementById("okButton").onclick=function(){redirect(url);};
 	toggle();
 }
 

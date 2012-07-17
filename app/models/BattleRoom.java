@@ -90,7 +90,10 @@ public class BattleRoom extends UntypedActor {
     // Members of this room.
     //Map<String, WebSocket.Out<JsonNode>> members = new HashMap<String WebSocket.Out<JsonNode>>();
     Map<String, Player> members = new HashMap<String,Player>();// WebSocket.Out<JsonNode>>();
-    
+    enum GameStates { NOT_READY, READY, ENDED};
+    GameStates gameState= GameStates.NOT_READY;
+    String winner=null;
+
     public void onReceive(Object message) throws Exception {
         System.out.println("New Message "+ message.toString());
         if(message instanceof Join) {
@@ -120,28 +123,43 @@ public class BattleRoom extends UntypedActor {
             }
             
         } else if(message instanceof UserAction)  {
+
+            //if(members.get(userAction.username).ready2Play && members.get(userAction.username).enemy.ready2Play){
+
             // Received a UserAction message
             UserAction userAction = (UserAction)message;
             switch (userAction.action){
                 case ATTACK:{
-                    if(members.size()==2){
-                        if(members.get(userAction.username).myTurn){
+                    switch (gameState){
+                       case NOT_READY:{
+                           notifyPlayer("error",userAction.username,"Commander","The enemy fleet is not in range yet, we need to wait a bit longer.",Json.toJson(""));
+                       }break;
+                       case ENDED:{
+                           communicateResult(ShootResults.LOST_GAME,winner,userAction.text);
+                       }   break;
+                       default:{
+                           if(members.size()==2){
+                               if(members.get(userAction.username).myTurn){
 
-                            communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
-                            for(Player user:members.values()){
-                                user.changeTurn();
-                            }
-                            //CHECK AUTOPLAY
-                            if(members.get(userAction.username).enemy.isAutoplayOn()){
-                                notifyPlayer("autoplay",members.get(userAction.username).enemy.username,"Commander","",Json.toJson(""));
-                            }
-                        }else{
-                            notifyPlayer("error",userAction.username,"Commander","We are still preparing the torpedos, my Captain.",Json.toJson(""));
-                        }
-                    } else{
-                        notifyPlayer("error",userAction.username,"Commander","Sir, no foes are shown on the radars.",Json.toJson(""));
-                    }
-                }   break;
+                                   communicateResult(members.get(userAction.username).attack(userAction.text),userAction.username,userAction.text);
+                                   for(Player user:members.values()){
+                                       user.changeTurn();
+                                   }
+                                   //CHECK AUTOPLAY
+                                   if(members.get(userAction.username).enemy.isAutoplayOn()){
+                                       notifyPlayer("autoplay",members.get(userAction.username).enemy.username,"Commander","",Json.toJson(""));
+                                   }
+                               }else{
+                                   notifyPlayer("error",userAction.username,"Commander","We are still preparing the torpedos, my Captain.",Json.toJson(""));
+                               }
+
+                           } else{
+                               notifyPlayer("error",userAction.username,"Commander","Sir, no foes are shown on the radars.",Json.toJson(""));
+                           }
+                       }   break;
+                       }
+
+                    } break;
                 case READY:{
                     notifyPlayer("strategy",userAction.username,"Commander","The fleet is positioned",Json.toJson(members.get(userAction.username).getShipPositions()));
                     if(members.get(userAction.username).isReady()){
@@ -150,6 +168,9 @@ public class BattleRoom extends UntypedActor {
                     } else{
                         // algo fallo
                         System.out.println("algo fallo");
+                    }
+                    if(members.get(userAction.username).ready2Play && members.get(userAction.username).enemy.ready2Play){
+                        gameState=GameStates.READY;
                     }
                 } break;
                 case RESET_SHIP:{
@@ -203,9 +224,11 @@ public class BattleRoom extends UntypedActor {
                 notifyResult(player,tile,"We sent them straight to Hell my Captain!","Abandon ship!!!",Json.toJson(new SunkMsg(tile,"sunk",members.get(player).enemy.username,members.get(player).enemy.getShip(tile).getPositions(),members.get(player).enemy.getShip(tile).getName())));
             } break;
             case WATER: notifyResult(player,tile,"We missed!","Hurrah!! They missed!",Json.toJson(new msg(tile,"miss",members.get(player).enemy.username))); break;
-            case LOST_GAME: notifyResult(player,tile,"win","lose",Json.toJson("EndGame"));
-
-                            break;
+            case LOST_GAME: {
+                notifyResult(player,tile,"win","lose",Json.toJson("EndGame"));
+                winner=player;
+                gameState=GameStates.ENDED;
+            } break;
             default: notifyAll("Error",player,"Something went wrong! Garrrrr"); break;
         }
 
@@ -319,7 +342,7 @@ public class BattleRoom extends UntypedActor {
 
                     public endMsg(String username) {
                        endGame="EndGame";
-                       myURL=routes.Application.chat(username).toString();
+                       myURL=routes.Application.chatRoom(username).toString();
 
                     }
     }
